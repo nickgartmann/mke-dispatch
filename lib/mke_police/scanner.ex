@@ -144,6 +144,7 @@ defmodule MkePolice.Scanner do
     case district do
       "NTF"  -> -1
       "CITY" -> -1
+      "OUT"  -> -1
       nil    -> nil
       id     -> String.to_integer(id)
     end
