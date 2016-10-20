@@ -13,7 +13,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :mke_police, MkePolice.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [host: "mke-police.herokuapp.com"]
+  url: [scheme: "http", host: "mke-police.herokuapp.com", port: 80]
 
 config :mke_police, MkePolice.Repo,
   adapter: Ecto.Adapters.Postgres,
