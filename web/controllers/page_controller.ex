@@ -30,6 +30,30 @@ defmodule MkePolice.PageController do
     })
   end
 
+  def csv(conn, %{"action" => "download", "format" => "csv", "start" => start_date, "end" => end_date}) do
+    start_date = Timex.parse!(start_date, "{ISO:Extended}")
+    end_date = Timex.parse!(end_date, "{ISO:Extended}")
+
+    calls = from(call in Call, 
+      where: call.time >= ^start_date and call.time <= ^end_date,
+      order_by: [desc: call.time]
+    ) |> Repo.all
+
+    csv_content = calls 
+      |> Enum.map(&Map.from_struct/1) 
+      |> CSV.encode(headers: [:id, :time, :location, :district, :nature, :status] ) 
+      |> Enum.to_list()
+
+    conn
+    |> put_resp_content_type("text/csv")
+    |> put_resp_header("Content-Disposition", "attachment; filename=\"MPD Call Data.csv\"")
+    |> send_resp(200, csv_content)
+  end
+
+  def csv(conn, _) do 
+    render conn, "csv.html"
+  end
+
 
   # JSON view of all calls between start and end (datetimes in ISO:Extended)
   def calls(conn, %{"start" => start_date, "end" => end_date}) do

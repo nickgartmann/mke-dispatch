@@ -1,0 +1,27 @@
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <a href="/" class="navbar-brand" style="position: relative; top: 5px;">
+      Download CSV of Milwaukee Police call logs
+    </a>
+    <p class="navbar-right">
+      <a class="btn btn-primary navbar-btn" href="/">
+        View live data
+      </a>
+    </p>
+  </div>
+</div>
+<div style="margin-top: 70px;"></div>
+<form method="GET" action="/csv">
+  <input type="hidden" name="format" value="csv">
+  <div class="form-group row">
+    <div class="col-xs-6">
+      <label for="start-date">Staring at</label>
+      <input type="date" class="form-control" id="start-date">
+    </div>
+    <div class="col-xs-6">
+      <label for="end-date">Ending at</label>
+      <input type="date" id="end-date">
+    </div>
+  </div>
+</form>
+

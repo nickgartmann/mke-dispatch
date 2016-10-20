@@ -19,3 +19,15 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+$(function() {
+  $('#datetimepicker1').datetimepicker({
+    format: "YYYY-MM-DDTHH:mm:ss.00000Z",
+    sideBySide: true,
+    defaultDate: moment().startOf('day')
+  });
+  $('#datetimepicker2').datetimepicker({
+    format: "YYYY-MM-DDTHH:mm:ss.00000Z",
+    sideBySide: true,
+    defaultDate: moment()
+  });
+})

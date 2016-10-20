@@ -1,0 +1,51 @@
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <a href="/" class="navbar-brand" style="position: relative; top: 5px;">
+      Download CSV of Milwaukee Police call logs
+    </a>
+    <p class="navbar-right">
+      <a class="btn btn-primary navbar-btn" href="/">
+        View live data
+      </a>
+    </p>
+  </div>
+</div>
+<div style="margin-top: 80px;"></div>
+<p>
+Use this form to download a CSV version of the call logs provided by 
+the Milwaukee police department. Use the date pickers below to select
+a start and an end date (they default to just selecting the current day).
+</p>
+<p>
+<strong>Do NOT type the dates you want, it will not work. You MUST use the date pickers</strong>
+</P>
+<form method="GET" action="/csv">
+  <input type="hidden" name="format" value="csv">
+  <input type="hidden" name="action" value="download">
+  <div class="row">
+    <div class="col-xs-6">
+      <div class="form-group">
+        <label>Starting at</label>
+        <div class='input-group date' id='datetimepicker1'>
+          <input type='text' class="form-control" name="start"/>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-6">
+      <div class="form-group">
+        <label>Ending at</label>
+        <div class='input-group date' id='datetimepicker2'>
+          <input type='text' class="form-control" name="end" />
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-primary btn-large">Download .CSV</button>
+</form>
+
