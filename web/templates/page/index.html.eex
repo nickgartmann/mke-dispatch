@@ -1,0 +1,47 @@
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <a href="/" class="navbar-brand" style="position: relative; top: 5px;">
+    Milwaukee Police Department calls on <%= @start_date |> Timex.format!("{Mfull} {0D}, {YYYY}") %>
+    </a>
+    <p class="navbar-right">
+      <a href="/?start=<%= @start_date |> Timex.shift(days: -1) |> Timex.format!("{ISO:Extended}") %>&end=<%= @end_date |> Timex.shift(days: -1) |> Timex.format!("{ISO:Extended}") %>" class="btn navbar-btn btn-primary">
+        &#8592;&nbsp; <%= @start_date |> Timex.shift(days: -1) |> Timex.format!("{Mshort} {0D}") %>
+      </a>
+      <a class="btn btn-primary navbar-btn" href="/?start=<%= @start_date |> Timex.shift(days: 1) |> Timex.format!("{ISO:Extended}") %>&end=<%= @end_date |> Timex.shift(days: 1) |> Timex.format!("{ISO:Extended}") %>" >
+        <%= @start_date |> Timex.shift(days: 1) |> Timex.format!("{Mshort} {0D}") %>
+        &nbsp;&#8594;
+      </a>
+    </p>
+  </div>
+</div>
+<div style="margin-top: 70px;"></div>
+<%= if Enum.count(@calls) > 0 do %>
+  <table class="table table-striped table-bordered">
+    <colgroup>
+      <col style="width: 100px;">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Location</th>
+        <th>Nature</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= Enum.map @calls, fn(call) -> %>
+        <tr>
+          <td><%= format_time(call.time)  %></td>
+          <td><%= call.location %></td>
+          <td><%= call.nature %></td>
+          <td><%= call.status %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <h3>No call data for <%= @start_date |> Timex.format!("{Mfull} {0D}, {YYYY}") %></h3>
+  <a class="btn btn-default" href="/" >
+    View calls for today - <%= Timex.today |> Timex.format!("{Mshort} {0D}")  %>
+  </a>
+<% end %>
