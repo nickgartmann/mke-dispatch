@@ -16,6 +16,12 @@
 </div>
 <div style="margin-top: 70px;"></div>
 <%= if Enum.count(@calls) > 0 do %>
+  <div class="pull-right">
+    <a class="btn btn-success" href="/csv?format=csv&action=download&start=<%= @start_date |> Timex.format!("{ISO:Extended}") %>&end=<%= @end_date |> Timex.format!("{ISO:Extended}") %>">
+      Download as .csv
+    </a>
+  </div>
+  <br />
   <table class="table table-striped table-bordered">
     <colgroup>
       <col style="width: 100px;">
