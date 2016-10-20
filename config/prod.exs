@@ -16,7 +16,7 @@ config :mke_police, MkePolice.Endpoint,
   url: [host: "example.com", port: 80],
   cache_static_manifest: "priv/static/manifest.json"
 
-config :rokkincat, RokkinCat.Repo,
+config :mke_police, MkePolice.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
   pool_size: 10,
