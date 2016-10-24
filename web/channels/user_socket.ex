@@ -3,6 +3,7 @@ defmodule MkePolice.UserSocket do
 
   ## Channels
   # channel "room:*", MkePolice.RoomChannel
+  channel "calls:*", MkePolice.CallChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

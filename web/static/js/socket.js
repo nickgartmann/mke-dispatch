@@ -54,9 +54,38 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 socket.connect()
 
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("topic:subtopic", {})
+let channel = socket.channel("calls:all", {})
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
+channel.on("new", resp => {
+  let $table = document.getElementById("calls-table");
+  let $tr = document.createElement("tr");
+  $tr.setAttribute("data-id", resp.id);
+  $tr.innerHTML = `
+  <td class="time"></td>
+  <td class="location"></td>
+  <td class="nature"></td>
+  <td class="status"></td>
+  `;
+
+  render($tr, resp);
+  $table.querySelector("tbody").insertBefore($tr, $table.querySelector("tbody tr:first-child"));
+
+
+
+})
+channel.on("update", resp => {
+  let $table = document.getElementById("calls-table");
+  let $el = document.querySelector(`[data-id="${resp.id}"]`)
+  render($el, resp)
+})
+
+function render($el, call) {
+  $el.querySelector(".time").innerText = moment(call.time).format("h:mm a");
+  $el.querySelector(".location").innerText = call.location;
+  $el.querySelector(".nature").innerText = call.nature;
+  $el.querySelector(".status").innerText = call.status;
+}
 export default socket

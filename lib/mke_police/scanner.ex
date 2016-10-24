@@ -24,11 +24,11 @@ defmodule MkePolice.Scanner do
         case rcall do
           nil   -> 
             rcall = Repo.insert!(Call.changeset(%Call{}, call))
-            MkePolice.Endpoint.broadcast("calls", "new", rcall)
+            MkePolice.Endpoint.broadcast("calls:all", "new", rcall)
             MkePolice.Endpoint.broadcast("calls:#{rcall.district}", "new", rcall)
           rcall -> 
             rcall = Repo.update!(Call.changeset(rcall, call))
-            MkePolice.Endpoint.broadcast("calls", "update", rcall)
+            MkePolice.Endpoint.broadcast("calls:all", "update", rcall)
             MkePolice.Endpoint.broadcast("calls:#{rcall.district}", "update", rcall)
         end
 
