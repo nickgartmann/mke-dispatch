@@ -1,0 +1,50 @@
+<script src="https://openlayers.org/en/v3.19.0/build/ol.js"></script>
+<link rel="stylesheet" href="https://openlayers.org/en/v3.19.0/css/ol.css" type="text/css">
+
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <a href="/" class="navbar-brand" style="position: relative; top: 5px;">
+    Milwaukee Police Department calls on <%= Timex.today |> Timex.format!("{Mfull} {0D}, {YYYY}") %>
+    </a>
+  </div>
+</div>
+<div style="margin-top: 70px;"></div>
+
+<div id="map" class="map" style="height: 500px;"></div>
+
+<script>
+
+window.map = new ol.Map({
+  target: 'map',
+  layers: [
+    new ol.layer.Tile({
+      source: new ol.source.OSM()
+    })
+  ],
+  view: new ol.View({
+    center: ol.proj.fromLonLat([-88.306474, 43.038902]),
+    zoom: 10
+  })
+});
+
+var map = window.map;
+fetch("/api/calls").then(function(response) {
+response.json().then(function(calls) {
+
+  calls.forEach(function(call) {
+  map.addOverlay(new ol.Overlay({
+      position: ol.proj.transform(
+                        [call.longitude, call.latitude],
+                        'EPSG:4326',
+                        'EPSG:3857'
+                      ),
+    element: $("<div style='height: 5px; width: 5px; background-color: blue'></div>")[0]
+  }));
+});
+
+    
+
+
+  })
+});
+</script>

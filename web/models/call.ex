@@ -8,6 +8,8 @@ defmodule MkePolice.Call do
     field :nature, :string
     field :status, :string
 
+    field :point, Geo.Point
+
     timestamps()
   end
 
@@ -16,20 +18,27 @@ defmodule MkePolice.Call do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:id, :time, :location, :district, :nature, :status])
+    |> cast(params, [:id, :time, :location, :district, :nature, :status, :point])
     |> validate_required([:id, :time, :location, :district, :nature, :status])
   end
 end
 
 defimpl Poison.Encoder, for: MkePolice.Call do
   def encode(call, options \\ []) do
+    {longitude, latitude} = case call.point do 
+      nil -> {nil, nil}
+      pt  -> {lng, lat} = pt.coordinates 
+    end
+
     %{
       id: call.id,
       time: call.time,
       location: call.location,
       district: call.district,
       nature: call.nature,
-      status: call.status
+      status: call.status,
+      latitude: latitude,
+      longitude: longitude
     }
     |> Poison.Encoder.encode(options)
   end

@@ -41,7 +41,8 @@ defmodule MkePolice.Mixfile do
      {:httpoison, "~> 0.9.0"},
      {:timex, "~> 3.1.0"},
      {:floki, "~> 0.11.0"},
-     {:csv, "~> 1.4.2"}
+     {:csv, "~> 1.4.2"},
+     {:geo, "~> 1.0"}
    ]
   end
 

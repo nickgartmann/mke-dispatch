@@ -23,6 +23,8 @@ defmodule MkePolice.Scanner do
 
         case rcall do
           nil   -> 
+            {lat, lng} = Geocode.lookup(call.location)
+            call = Map.put(call, :point, %Geo.Point{coordinates: {lng, lat}, srid: 4326})
             rcall = Repo.insert!(Call.changeset(%Call{}, call))
             MkePolice.Endpoint.broadcast("calls:all", "new", rcall)
             MkePolice.Endpoint.broadcast("calls:#{rcall.district}", "new", rcall)

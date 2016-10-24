@@ -19,7 +19,11 @@ config :mke_police, MkePolice.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
   pool_size: 10,
-  ssl: true
+  ssl: true,
+  extensions: [{Geo.PostGIS.Extension, library: Geo}]
+
+config :mke_police, Geocode,
+  google_api_key: System.get_env("GOOGLE_GEOCODE_API_KEY")
 
 # Do not print debug messages in production
 config :logger, level: :info

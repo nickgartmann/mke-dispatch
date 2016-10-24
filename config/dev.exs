@@ -26,6 +26,9 @@ config :mke_police, MkePolice.Endpoint,
     ]
   ]
 
+config :mke_police, Geocode,
+  google_api_key: "AIzaSyBNfEiOtth2yH7j2RvDmurYY-QIvZAY_rw"
+
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 
@@ -40,4 +43,5 @@ config :mke_police, MkePolice.Repo,
   password: "postgres",
   database: "mke_police_dev",
   hostname: "localhost",
-  pool_size: 10
+  pool_size: 10,
+  extensions: [{Geo.PostGIS.Extension, library: Geo}]

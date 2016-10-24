@@ -18,16 +18,24 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-import socket from "./socket"
-$(function() {
-  $('#datetimepicker1').datetimepicker({
-    format: "YYYY-MM-DDTHH:mm:ss.00000Z",
-    sideBySide: true,
-    defaultDate: moment().startOf('day')
-  });
-  $('#datetimepicker2').datetimepicker({
-    format: "YYYY-MM-DDTHH:mm:ss.00000Z",
-    sideBySide: true,
-    defaultDate: moment()
-  });
-})
+// import socket from "./socket"
+//
+
+if(window.location.pathname == "/csv") {
+  $(function() {
+    $('#datetimepicker1').datetimepicker({
+      format: "YYYY-MM-DDTHH:mm:ss.00000Z",
+      sideBySide: true,
+      defaultDate: moment().startOf('day')
+    });
+    $('#datetimepicker2').datetimepicker({
+      format: "YYYY-MM-DDTHH:mm:ss.00000Z",
+      sideBySide: true,
+      defaultDate: moment()
+    });
+  })
+} else if (window.location.pathname == "/") {
+  import socket from "./list-socket";
+} else if (window.location.pathname == "/map") {
+  import socket from "./map-socket";
+}
