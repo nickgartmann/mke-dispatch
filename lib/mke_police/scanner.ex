@@ -145,6 +145,7 @@ defmodule MkePolice.Scanner do
       "NTF"  -> -1
       "CITY" -> -1
       "OUT"  -> -1
+      "ICS4" -> -1
       nil    -> nil
       id     -> String.to_integer(id)
     end
