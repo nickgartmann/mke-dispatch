@@ -41,7 +41,16 @@ defmodule MkePolice.PageController do
 
     csv_content = calls 
       |> Enum.map(&Map.from_struct/1) 
-      |> CSV.encode(headers: [:id, :time, :location, :district, :nature, :status] ) 
+      |> Enum.map(fn(call) ->
+        {longitude, latitude} = case call.point do 
+          nil -> {nil, nil}
+          pt  -> {lng, lat} = pt.coordinates 
+        end
+        call
+        |> Map.put(:latitude, latitude)
+        |> Map.put(:longitude, longitude)
+      end)
+      |> CSV.encode(headers: [:id, :time, :location, :latitude, :longitude, :district, :nature, :status] ) 
       |> Enum.to_list()
 
     conn
