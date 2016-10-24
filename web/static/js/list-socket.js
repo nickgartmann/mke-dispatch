@@ -46,41 +46,43 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 // Finally, pass the token on connect as below. Or remove it
 // from connect if you don't care about authentication.
 
-socket.connect()
+function listSocket() {
+  socket.connect()
 
-// Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("calls:all", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
+  // Now that you are connected, you can join channels with a topic:
+  let channel = socket.channel("calls:all", {})
+  channel.join()
+    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp) })
 
-channel.on("new", resp => {
-  let $table = document.getElementById("calls-table");
-  let $tr = document.createElement("tr");
-  $tr.setAttribute("data-id", resp.id);
-  $tr.innerHTML = `
-  <td class="time"></td>
-  <td class="location"></td>
-  <td class="nature"></td>
-  <td class="status"></td>
-  `;
+  channel.on("new", resp => {
+    let $table = document.getElementById("calls-table");
+    let $tr = document.createElement("tr");
+    $tr.setAttribute("data-id", resp.id);
+    $tr.innerHTML = `
+    <td class="time"></td>
+    <td class="location"></td>
+    <td class="nature"></td>
+    <td class="status"></td>
+    `;
 
-  render($tr, resp);
-  $table.querySelector("tbody").insertBefore($tr, $table.querySelector("tbody tr:first-child"));
+    render($tr, resp);
+    $table.querySelector("tbody").insertBefore($tr, $table.querySelector("tbody tr:first-child"));
 
 
 
-})
-channel.on("update", resp => {
-  let $table = document.getElementById("calls-table");
-  let $el = document.querySelector(`[data-id="${resp.id}"]`)
-  render($el, resp)
-})
+  })
+  channel.on("update", resp => {
+    let $table = document.getElementById("calls-table");
+    let $el = document.querySelector(`[data-id="${resp.id}"]`)
+    render($el, resp)
+  })
 
-function render($el, call) {
-  $el.querySelector(".time").innerText = moment(call.time).format("h:mm a");
-  $el.querySelector(".location").innerText = call.location;
-  $el.querySelector(".nature").innerText = call.nature;
-  $el.querySelector(".status").innerText = call.status;
+  function render($el, call) {
+    $el.querySelector(".time").innerText = moment(call.time).format("h:mm a");
+    $el.querySelector(".location").innerText = call.location;
+    $el.querySelector(".nature").innerText = call.nature;
+    $el.querySelector(".status").innerText = call.status;
+  }
 }
-export default socket
+export default listSocket

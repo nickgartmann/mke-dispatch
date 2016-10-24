@@ -2,6 +2,7 @@ import {Socket} from "phoenix"
 
 let socket = new Socket("/socket", {params: {token: window.userToken}})
 
+function mapSocket() {
 
 socket.connect()
 
@@ -21,5 +22,6 @@ channel.on("new", resp => {
     element: $("<div style='height: 5px; width: 5px; background-color: blue'></div>")[0]
   }));
 })
+}
 
-export default socket
+export default mapSocket

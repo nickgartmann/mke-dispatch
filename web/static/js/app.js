@@ -12,6 +12,8 @@
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
 import "phoenix_html"
+import listSocket from "./list-socket";
+import mapSocket from "./map-socket";
 
 // Import local files
 //
@@ -35,7 +37,7 @@ if(window.location.pathname == "/csv") {
     });
   })
 } else if (window.location.pathname == "/") {
-  import socket from "./list-socket";
+  listSocket();
 } else if (window.location.pathname == "/map") {
-  import socket from "./map-socket";
+  mapSocket();
 }
