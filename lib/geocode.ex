@@ -3,10 +3,14 @@ defmodule Geocode do
     %{ "lat" => lat, "lng" => lng} = HTTPoison.get!(url(address))
     |> Map.get(:body)
     |> Poison.decode!()
-    |> Map.get("results")
+    |> Dict.get("results")
+    |> case do
+      [] -> [%{"geometry" => %{"location" => %{"lat" => nil, "lng" => nil}}}]
+      res -> res
+    end
     |> Enum.at(0)
-    |> Map.get("geometry")
-    |> Map.get("location")
+    |> Dict.get("geometry")
+    |> Dict.get("location")
     {lat, lng}
   end
 
