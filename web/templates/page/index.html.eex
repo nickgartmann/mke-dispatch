@@ -1,26 +1,8 @@
-<!--
-<div class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-    <a href="/" class="navbar-brand" style="position: relative; top: 5px;">
-    Milwaukee Police Department calls on <%= @start_date |> Timex.format!("{Mfull} {0D}, {YYYY}") %>
-    </a>
-    <p class="navbar-right">
-      <a href="/?start=&end=" class="btn navbar-btn btn-primary">
-        &#8592;&nbsp; <%= @start_date |> Timex.shift(days: -1) |> Timex.format!("{Mshort} {0D}") %>
-      </a>
-      <a class="btn btn-primary navbar-btn" href="/?start=<%= @start_date |> Timex.shift(days: 1) |> Timex.format!("{ISO:Extended}") %>&end=<%= @end_date |> Timex.shift(days: 1) |> Timex.format!("{ISO:Extended}") %>" >
-        <%= @start_date |> Timex.shift(days: 1) |> Timex.format!("{Mshort} {0D}") %>
-        &nbsp;&#8594;
-      </a>
-    </p>
-  </div>
-</div>
--->
 <br />
 <div class="usa-grid">
   <p>
   This project is an effort to provide a more useful view of the Milwaukee Police Department (MPD) call dispatch log, which is provided
-  by the MPD <a href="">here</a>. Their live feed provides the most recent 90 minutes of calls dispatched. This dataset attempts to catalog
+  by the MPD <a href="http://itmdapps.milwaukee.gov/MPDCallData/currentCADCalls/callsService.faces">here</a>. Their live feed provides the most recent 90 minutes of calls dispatched. This dataset attempts to catalog
   the entire history, going back to October 19, 2016 (the start of this project). If you would like to contribute to this project, or request
   changes, please email <a href="mailto:nick@rokkincat.com">nick@rokkincat.com</a>. The hosting and development of this project has been 
   donated by the local software contracting firm <a href="http://www.rokkincat.com/">RokkinCat</a>.

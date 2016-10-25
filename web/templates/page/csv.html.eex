@@ -2,7 +2,7 @@
 <div class="usa-grid">
 <p>
   This project is an effort to provide a more useful view of the Milwaukee Police Department (MPD) call dispatch log, which is provided
-  by the MPD <a href="">here</a>. Their live feed provides the most recent 90 minutes of calls dispatched. This dataset attempts to catalog
+  by the MPD <a href="http://itmdapps.milwaukee.gov/MPDCallData/currentCADCalls/callsService.faces">here</a>. Their live feed provides the most recent 90 minutes of calls dispatched. This dataset attempts to catalog
   the entire history, going back to October 19, 2016 (the start of this project). If you would like to contribute to this project, or request
   changes, please email <a href="mailto:nick@rokkincat.com">nick@rokkincat.com</a>. The hosting and development of this project has been 
   donated by the local software contracting firm <a href="http://www.rokkincat.com/">RokkinCat</a>.
