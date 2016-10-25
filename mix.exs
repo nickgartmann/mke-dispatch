@@ -10,7 +10,12 @@ defmodule MkePolice.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases(),
-     deps: deps()]
+     deps: deps(),
+     docs: [
+       main: "readme",
+       extras: ["README.md"]
+     ]
+   ]
   end
 
   # Configuration for the OTP application.
@@ -42,7 +47,8 @@ defmodule MkePolice.Mixfile do
      {:timex, "~> 3.1.0"},
      {:floki, "~> 0.11.0"},
      {:csv, "~> 1.4.2"},
-     {:geo, "~> 1.0"}
+     {:geo, "~> 1.0"},
+     {:ex_doc, "~> 0.14", only: :dev}
    ]
   end
 

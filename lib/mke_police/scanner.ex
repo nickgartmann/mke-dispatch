@@ -150,7 +150,8 @@ defmodule MkePolice.Scanner do
       "ICS4" -> -1
       "OCOE" -> -1
       nil    -> nil
-      id     -> String.to_integer(id)
+      id when is_integer(id) -> String.to_integer(id)
+      _ -> -1
     end
   end
 

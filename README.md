@@ -1,20 +1,11 @@
-# MkePolice
+# Milwaukee Police Department Dispatch 
 
-To start your Phoenix app:
+This is a project to provide a more generally useful interface to the live data feed of call dispatch provided by the Milwaukee Police Department ([link](http://itmdapps.milwaukee.gov/MPDCallData/currentCADCalls/callsService.faces)).
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  * Install Node.js dependencies with `npm install`
-  * Start Phoenix endpoint with `mix phoenix.server`
+The goals of the project are:
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+* Allow viewing of dispatch records across any time period (Dataset provided by the MPD is limited to most recent 90 minutes)
+* Map dispatch records across any time period
+* Allow bulk download of raw call logs (json and csv formats) across any time period
 
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
 
-## Learn more
-
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
