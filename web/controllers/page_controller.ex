@@ -30,9 +30,10 @@ defmodule MkePolice.PageController do
     })
   end
 
-  def csv(conn, %{"action" => "download", "format" => "csv", "start" => start_date, "end" => end_date}) do
-    start_date = Timex.parse!(start_date, "{ISO:Extended}")
-    end_date = Timex.parse!(end_date, "{ISO:Extended}")
+  def csv(conn, %{"action" => "download", "format" => "csv", "start" => %{"month" => start_month, "day" => start_day, "year" => start_year }, "end" => %{"month" => end_month, "day" => end_day, "year" => end_year}}) do
+    start_date = Timex.parse!("#{start_year}-#{start_month}-#{start_day}", "{YYYY}-{0M}-{0D}")
+    end_date = Timex.parse!("#{end_year}-#{end_month}-#{end_day}", "{YYYY}-{0M}-{0D}")
+      |> Timex.end_of_day()
 
     calls = from(call in Call, 
       where: call.time >= ^start_date and call.time <= ^end_date,
@@ -93,9 +94,32 @@ defmodule MkePolice.PageController do
     })
   end
 
-  def map(conn, _) do 
-    render(conn, "map.html")
+  def map(conn, %{"start" => start_date, "end" => end_date}) do
+    start_date = Timex.parse!(start_date, "{ISO:Extended}")
+    end_date = Timex.parse!(end_date, "{ISO:Extended}")
+
+    calls = from(call in Call, 
+      where: call.time >= ^start_date and call.time <= ^end_date,
+      order_by: [desc: call.time]
+    ) |> Repo.all
+
+    render conn, "map.html", calls: calls, start_date: start_date, end_date: end_date
   end
+
+  def map(conn, %{"start" => start_date}) do
+    map(conn, %{
+      "start" => start_date,
+      "end"   => default_end_date()
+    })
+  end
+
+  def map(conn, _) do
+    map(conn, %{
+      "start" => Timex.now("America/Chicago") |> Timex.beginning_of_day() |> Timex.format!("{ISO:Extended}"),
+      "end"   => default_end_date()
+    })
+  end
+
 
   defp default_start_date(), do: Timex.now("America/Chicago") |> Timex.beginning_of_day() |> Timex.format!("{ISO:Extended}")
   defp default_end_date(), do: Timex.now("America/Chicago") |> Timex.format!("{ISO:Extended}")

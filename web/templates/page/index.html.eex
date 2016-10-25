@@ -1,10 +1,11 @@
+<!--
 <div class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <a href="/" class="navbar-brand" style="position: relative; top: 5px;">
     Milwaukee Police Department calls on <%= @start_date |> Timex.format!("{Mfull} {0D}, {YYYY}") %>
     </a>
     <p class="navbar-right">
-      <a href="/?start=<%= @start_date |> Timex.shift(days: -1) |> Timex.format!("{ISO:Extended}") %>&end=<%= @end_date |> Timex.shift(days: -1) |> Timex.format!("{ISO:Extended}") %>" class="btn navbar-btn btn-primary">
+      <a href="/?start=&end=" class="btn navbar-btn btn-primary">
         &#8592;&nbsp; <%= @start_date |> Timex.shift(days: -1) |> Timex.format!("{Mshort} {0D}") %>
       </a>
       <a class="btn btn-primary navbar-btn" href="/?start=<%= @start_date |> Timex.shift(days: 1) |> Timex.format!("{ISO:Extended}") %>&end=<%= @end_date |> Timex.shift(days: 1) |> Timex.format!("{ISO:Extended}") %>" >
@@ -14,13 +15,32 @@
     </p>
   </div>
 </div>
-<div style="margin-top: 70px;"></div>
-  <div class="pull-right">
-    <a class="btn btn-success" href="/csv?format=csv&action=download&start=<%= @start_date |> Timex.format!("{ISO:Extended}") %>&end=<%= @end_date |> Timex.format!("{ISO:Extended}") %>">
-      Download as .csv
+-->
+<br />
+<div class="usa-grid">
+  <p>
+  This project is an effort to provide a more useful view of the Milwaukee Police Department (MPD) call dispatch log, which is provided
+  by the MPD <a href="">here</a>. Their live feed provides the most recent 90 minutes of calls dispatched. This dataset attempts to catalog
+  the entire history, going back to October 19, 2016 (the start of this project). If you would like to contribute to this project, or request
+  changes, please email <a href="mailto:nick@rokkincat.com">nick@rokkincat.com</a>. The hosting and development of this project has been 
+  donated by the local software contracting firm <a href="http://www.rokkincat.com/">RokkinCat</a>.
+  </p>
+</div>
+<div style="margin-top: 20px;"></div>
+<div class="usa-grid action-bar">
+  <div class="usa-width-one-third">
+    <a href="/?start=<%= @start_date |> Timex.shift(days: -1) |> Timex.format!("{ISO:Extended}") %>&end=<%= @end_date |> Timex.end_of_day() |> Timex.shift(days: -1) |> Timex.format!("{ISO:Extended}") %>" class="usa-button">
+      <span style="display: inline-block; transform: rotate(180deg)">
+  &#10142;</span>&nbsp;&nbsp;<%= @start_date |> Timex.shift(days: -1) |> Timex.format!("{Mshort} {0D}") %></a></div>
+  <div class="usa-width-one-third today" style="text-align: center"><%= @start_date |> Timex.format!("{Mfull} {0D}, {YYYY}") %></div>
+  <div class="usa-width-one-third" style="text-align: right;">
+    <a class="usa-button usa-button-gray" href="/">Today</a>
+    <a style="margin-right: 0px;" href="/?start=<%= @start_date |> Timex.shift(days: 1) |> Timex.format!("{ISO:Extended}") %>&end=<%= @end_date |> Timex.end_of_day() |> Timex.shift(days: 1) |> Timex.format!("{ISO:Extended}") %>" class="usa-button">
+      <%= @start_date |> Timex.shift(days: 1) |> Timex.format!("{Mshort} {0D}") %>&nbsp;&nbsp;&#10142; 
     </a>
   </div>
-  <br />
+</div>
+<div class="usa-grid">
   <table class="table table-striped table-bordered" id="calls-table">
     <colgroup>
       <col style="width: 100px;">
@@ -44,3 +64,7 @@
       <% end %>
     </tbody>
   </table>
+</div>
+<br />
+<br />
+<br />

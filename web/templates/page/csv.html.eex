@@ -1,51 +1,53 @@
-<div class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-    <a href="/" class="navbar-brand" style="position: relative; top: 5px;">
-      Download CSV of Milwaukee Police call logs
-    </a>
-    <p class="navbar-right">
-      <a class="btn btn-primary navbar-btn" href="/">
-        View live data
-      </a>
-    </p>
-  </div>
-</div>
-<div style="margin-top: 80px;"></div>
+<div style="margin-top: 25px;"></div>
+<div class="usa-grid">
+<p>
+  This project is an effort to provide a more useful view of the Milwaukee Police Department (MPD) call dispatch log, which is provided
+  by the MPD <a href="">here</a>. Their live feed provides the most recent 90 minutes of calls dispatched. This dataset attempts to catalog
+  the entire history, going back to October 19, 2016 (the start of this project). If you would like to contribute to this project, or request
+  changes, please email <a href="mailto:nick@rokkincat.com">nick@rokkincat.com</a>. The hosting and development of this project has been 
+  donated by the local software contracting firm <a href="http://www.rokkincat.com/">RokkinCat</a>.
+  </p>
 <p>
 Use this form to download a CSV version of the call logs provided by 
 the Milwaukee police department. Use the date pickers below to select
 a start and an end date (they default to just selecting the current day).
 </p>
-<p>
-<strong>Do NOT type the dates you want, it will not work. You MUST use the date pickers</strong>
-</P>
 <form method="GET" action="/csv">
   <input type="hidden" name="format" value="csv">
   <input type="hidden" name="action" value="download">
-  <div class="row">
-    <div class="col-xs-6">
-      <div class="form-group">
-        <label>Starting at</label>
-        <div class='input-group date' id='datetimepicker1'>
-          <input type='text' class="form-control" name="start"/>
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
-          </span>
-        </div>
+  <fieldset>
+    <legend>Date range</legend>
+    <span class="usa-form-hint">For example: 02 03 1989</span>
+    <div class="start-date">
+      <div class="usa-form-group side-by-side"> 
+        <label>Month</label>
+        <input name="start[month]" value="<%= Timex.today.month %>" class="usa-form-control input-month" type="number" pattern="0?[1-9]|1[012]"/>
+      </div>
+      <div class="usa-form-group side-by-side"> 
+        <label>Day</label>
+        <input name="start[day]" value="<%= Timex.today.day %>" class="usa-form-control input-day" type="number" pattern="0?[1-9]|1[0-9]|2[0-9]|3[01]"/>
+      </div>
+      <div class="usa-form-group side-by-side"> 
+        <label>Year</label>
+        <input name="start[year]" value="<%= Timex.today.year %>" class="usa-form-control input-year" type="number" pattern="[0-9]{4}"/>
       </div>
     </div>
-    <div class="col-xs-6">
-      <div class="form-group">
-        <label>Ending at</label>
-        <div class='input-group date' id='datetimepicker2'>
-          <input type='text' class="form-control" name="end" />
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
-          </span>
-        </div>
-      </div>
+  </fieldset>
+  <div class="to">to</div>
+  <fieldset style="margin-top: 0px; padding-top: 0px;">
+    <div class="usa-form-group side-by-side"> 
+      <label>Month</label>
+      <input name="end[month]" value="<%= Timex.today.month %>" class="usa-form-control input-month" type="number" pattern="0?[1-9]|1[012]"/>
     </div>
-  </div>
+    <div class="usa-form-group side-by-side"> 
+      <label>Day</label>
+      <input name="end[day]" value="<%= Timex.today.day %>" class="usa-form-control input-day" type="number" pattern="0?[1-9]|1[0-9]|2[0-9]|3[01]"/>
+    </div>
+    <div class="usa-form-group side-by-side"> 
+      <label>Year</label>
+      <input name="end[year]" value="<%= Timex.today.year %>" class="usa-form-control input-year" type="number" pattern="[0-9]{4}"/>
+    </div>
+  </fieldset>
   <button class="btn btn-primary btn-large">Download .CSV</button>
 </form>
-
+</div>

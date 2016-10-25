@@ -2,3 +2,50 @@
 
 .actions .btn {
 }
+
+.header {
+  background-color: #112e51;
+  height: 70px;
+  line-height: 70px;
+  color: #FFF;
+}
+
+.header .title {
+  font-size: 2rem;
+  font-family: "Merriweather", "Georgia", "Cambria", "Times New Roman", "Times", serif;
+}
+
+.action-bar {
+  height: 70px;
+  line-height: 70px;
+}
+
+.action-bar .today {
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: "Merriweather", "Georgia", "Cambria", "Times New Roman", "Times", serif;
+}
+
+.usa-form-group.side-by-side {
+  display: inline-block;
+}
+
+.usa-form-group.side-by-side label {
+  margin-top: 1rem;
+}
+
+.input-month {
+  width: 6rem;
+}
+.input-day {
+  width: 6rem;
+}
+.input-year {
+  width: 9rem;
+}
+
+.to {
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #757575;
+}
