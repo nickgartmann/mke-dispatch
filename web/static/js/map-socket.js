@@ -15,7 +15,7 @@ channel.join()
 channel.on("new", resp => {
   window.map.addOverlay(new ol.Overlay({
       position: ol.proj.transform(
-                        [call.longitude, call.latitude],
+                        [resp.longitude, resp.latitude],
                         'EPSG:4326',
                         'EPSG:3857'
                       ),
