@@ -7,8 +7,8 @@ defmodule MkePolice.Scanner do
     GenServer.start_link(__MODULE__, [sup_pid, restart_interval])
   end
 
-  def init([sup_pid, interval]) do
-    Process.send(sup_pid, :scanner_started, [self()])
+  def init([callback, interval]) do
+    GenServer.cast(callback, {:scanner_started, self})
     Process.send_after(self(), :scan, interval)
     {:ok, interval}
   end
