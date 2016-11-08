@@ -2,12 +2,15 @@ defmodule MkePolice.Scanner do
 
   alias MkePolice.{Repo, Call}
 
+  @name :"MkePolice.Scanner"
+
 
   def start_link(sup_pid, restart_interval) do
-    GenServer.start_link(__MODULE__, [sup_pid, restart_interval])
+    GenServer.start_link(__MODULE__, [sup_pid, restart_interval], name: @name)
   end
 
   def init([callback, interval]) do
+    Process.link(callback)
     GenServer.cast(callback, {:scanner_started, self})
     Process.send_after(self(), :scan, interval)
     {:ok, interval}

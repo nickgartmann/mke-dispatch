@@ -18,7 +18,7 @@ defmodule MkePolice.ScannerSupervisor do
     ]
     children = [
       worker(MkePolice.ScannerServer, [{self, restart_interval}],
-        [restart: :temporary, name: :"MkePolice.ScannerServer"]),
+        [name: :"MkePolice.ScannerServer"]),
     ]
     supervise(children, opts)
   end
