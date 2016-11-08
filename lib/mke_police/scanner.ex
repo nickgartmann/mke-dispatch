@@ -1,13 +1,14 @@
-defmodule MkePolice.Scanner do 
+defmodule MkePolice.Scanner do
 
   alias MkePolice.{Repo, Call}
-  
 
-  def start_link(restart_interval) do 
-    GenServer.start_link(__MODULE__, restart_interval)
+
+  def start_link(sup_pid, restart_interval) do
+    GenServer.start_link(__MODULE__, [sup_pid, restart_interval])
   end
 
-  def init(interval) do
+  def init([sup_pid, interval]) do
+    Process.send(sup_pid, :scanner_started, [self()])
     Process.send_after(self(), :scan, interval)
     {:ok, interval}
   end
@@ -22,15 +23,15 @@ defmodule MkePolice.Scanner do
         end)
 
         case rcall do
-          nil   -> 
-            call = case Geocode.lookup(call.location) do 
+          nil   ->
+            call = case Geocode.lookup(call.location) do
               {nil, nil} -> call
               {lat, lng} -> Map.put(call, :point, %Geo.Point{coordinates: {lng, lat}, srid: 4326})
             end
             rcall = Repo.insert!(Call.changeset(%Call{}, call))
             MkePolice.Endpoint.broadcast("calls:all", "new", rcall)
             MkePolice.Endpoint.broadcast("calls:#{rcall.district}", "new", rcall)
-          rcall -> 
+          rcall ->
             rcall = Repo.update!(Call.changeset(rcall, call))
             MkePolice.Endpoint.broadcast("calls:all", "update", rcall)
             MkePolice.Endpoint.broadcast("calls:#{rcall.district}", "update", rcall)
@@ -50,13 +51,13 @@ defmodule MkePolice.Scanner do
   defp get_calls(pages \\ nil)
   defp get_calls(nil), do: get_calls(get_page())
   defp get_calls(%{calls: calls, page: {x, x}, view_state: view_state, cookies: cookies}), do: calls
-  defp get_calls(%{calls: calls, page: {current_page, end_page}, view_state: view_state, cookies: cookies}) do 
+  defp get_calls(%{calls: calls, page: {current_page, end_page}, view_state: view_state, cookies: cookies}) do
     calls ++ get_calls(get_page(view_state, cookies))
   end
-  
+
 
   defp get_page() do
-    response = HTTPoison.get!("http://itmdapps.milwaukee.gov/MPDCallData/currentCADCalls/callsService.faces") 
+    response = HTTPoison.get!("http://itmdapps.milwaukee.gov/MPDCallData/currentCADCalls/callsService.faces")
 
     view_state = response.body
     |> Floki.find("[name='javax.faces.ViewState']")
@@ -67,7 +68,7 @@ defmodule MkePolice.Scanner do
 
 
     calls = response
-    |> Map.get(:body) 
+    |> Map.get(:body)
     |> Floki.find("[id*='formId:tableExUpdateId'] tbody tr")
     |> Enum.map(&parse_row/1)
 
@@ -91,7 +92,7 @@ defmodule MkePolice.Scanner do
       {"formId:tableExUpdateId:deluxe1__pagerNext.x", 11},
       {"formId:tableExUpdateId:deluxe1__pagerNext.y", 11},
       {"javax.faces.ViewState", view_state}
-    ]}, %{}, hackney: [cookie: cookies]) 
+    ]}, %{}, hackney: [cookie: cookies])
 
     view_state = response.body
     |> Floki.find("[name='javax.faces.ViewState']")
@@ -101,7 +102,7 @@ defmodule MkePolice.Scanner do
     |> Keyword.fetch!(:value)
 
     calls = response
-    |> Map.get(:body) 
+    |> Map.get(:body)
     |> Floki.find("[id*='formId:tableExUpdateId'] tbody tr")
     |> Enum.map(&parse_row/1)
 
@@ -120,7 +121,7 @@ defmodule MkePolice.Scanner do
       time: Enum.at(children, 1) |> parse_time_cell(),
       location: Enum.at(children, 2) |> parse_cell(),
       district: Enum.at(children, 3) |> parse_district_cell(),
-      nature: Enum.at(children, 4) |> parse_cell(), 
+      nature: Enum.at(children, 4) |> parse_cell(),
       status: Enum.at(children, 5) |> parse_cell()
     }
   end
@@ -136,7 +137,7 @@ defmodule MkePolice.Scanner do
     rest
   end
 
-  
+
   defp parse_district_cell({_el, _, children}) do
 
     district = case Enum.at(children, 0) do
@@ -165,7 +166,7 @@ defmodule MkePolice.Scanner do
     end
   end
 
-  defp parse_page("Page " <> pages) do 
+  defp parse_page("Page " <> pages) do
     [current, total] = String.split(pages, " of ") |> Enum.map(&String.to_integer/1)
     {current, total}
   end
