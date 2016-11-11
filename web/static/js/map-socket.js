@@ -32,7 +32,7 @@ function mapSocket() {
         var size = feature.get('features').length
         return new ol.style.Style({
           image: new ol.style.Circle({
-            radius: 8 + (size * 0.10),
+            radius: 8 + (size * 0.05),
             stroke: new ol.style.Stroke({
               color: "#333"
             }),
