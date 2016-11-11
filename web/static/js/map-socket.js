@@ -63,7 +63,8 @@ function mapSocket() {
     ],
     view: new ol.View({
       center: ol.proj.fromLonLat([-88.306474, 43.038902]),
-      zoom: 10
+      zoom: 10,
+      minZoom: 9
     })
   });
 
