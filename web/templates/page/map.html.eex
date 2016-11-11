@@ -28,7 +28,3 @@
 <div class="usa-grid">
 <div id="map" class="map" style="height: 500px;"></div>
 
-<script>
-
-
-</script>

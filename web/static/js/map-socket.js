@@ -10,7 +10,7 @@ function mapSocket() {
   var map = window.map;
   window.featuresSource = new ol.source.Vector();
 
-  fetch("/api/calls").then(function(response) {
+  fetch("/api/calls" + window.location.search).then(function(response) {
   response.json().then(function(calls) {
 
     var features = [];
