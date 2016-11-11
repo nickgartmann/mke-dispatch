@@ -40,4 +40,8 @@ if(window.location.pathname == "/csv") {
   listSocket();
 } else if (window.location.pathname == "/map") {
   mapSocket();
+} else if (window.location.pathname == "/elm") {
+  const elmDiv = document.getElementById("elm-main");
+  const elmApp = Elm.SeatSaver.embed(elmDiv);
 }
+
