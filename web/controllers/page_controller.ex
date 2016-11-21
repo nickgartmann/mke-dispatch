@@ -120,6 +120,10 @@ defmodule MkePolice.PageController do
     })
   end
 
+  def elm(conn, _) do 
+    render conn, "elm.html"
+  end
+
 
   defp default_start_date(), do: Timex.now("America/Chicago") |> Timex.beginning_of_day() |> Timex.format!("{ISO:Extended}")
   defp default_end_date(), do: Timex.now("America/Chicago") |> Timex.format!("{ISO:Extended}")

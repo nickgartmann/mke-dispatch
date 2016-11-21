@@ -49,3 +49,20 @@
   font-weight: bold;
   color: #757575;
 }
+
+.popup {
+  background-color: #FFF;
+  transform: translateY(-100%) translateX(-50%);
+  position: relative;
+  top: -10px;
+  font-size: 12px;
+  border: 1px solid #5b616b;
+}
+
+.popup table {
+  margin: 0px;
+}
+
+.popup table td {
+  padding: 8px!important;
+}

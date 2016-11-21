@@ -19,6 +19,8 @@ defmodule MkePolice.Router do
     get "/", PageController, :index
     get "/csv", PageController, :csv
     get "/map", PageController, :map
+
+    get "/elm", PageController, :elm
   end
 
   # Other scopes may use custom stacks.
