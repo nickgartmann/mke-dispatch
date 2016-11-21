@@ -33,8 +33,8 @@ defmodule MkePolice.Scanner do
           rcall ->
             if(rcall.status != call[:status] || rcall.nature != call[:nature]) do
               rcall = Repo.insert!(Call.changeset(%Call{point: rcall.point}, call))
-              MkePolice.Endpoint.broadcast("calls:all", "update", rcall)
-              MkePolice.Endpoint.broadcast("calls:#{rcall.district}", "update", rcall)
+              MkePolice.Endpoint.broadcast("calls:all", "new", rcall)
+              MkePolice.Endpoint.broadcast("calls:#{rcall.district}", "new", rcall)
             end
         end
 
