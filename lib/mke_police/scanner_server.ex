@@ -6,7 +6,7 @@ defmodule MkePolice.ScannerServer do
   @name :"MkePolice.ScannerServer"
 
   defmodule State do
-    defstruct interval: nil, parent: nil, scanner: nil
+    defstruct interval: nil, parent: nil, scanner: nil, scanner_state: nil
   end
 
   ## API
@@ -18,12 +18,11 @@ defmodule MkePolice.ScannerServer do
   ## Callbacks
 
   def init({sup_pid, restart_interval}) do
-    Process.flag(:trap_exit, true)
     send(self, :start_scanner)
     {:ok, %State{interval: restart_interval, parent: sup_pid}}
   end
 
-  def handle_cast({:scanner_started, scanner_pid}, state) do
+  def handle_cast({:scanner_started, scanner_pid}, state) when is_pid(scanner_pid) do
     Process.flag(:trap_exit, true)
     Process.link(scanner_pid)
     {:noreply, %{state | scanner: scanner_pid}}
@@ -36,8 +35,10 @@ defmodule MkePolice.ScannerServer do
     {:noreply, state}
   end
 
-  def handle_info({:EXIT, pid, reason}, state = %{scanner: pid, interval: interval, parent: sup_pid}) do
-    Logger.error "Scanner died: #{inspect reason}"
+  def handle_info({:EXIT, pid, reason},
+    state = %{scanner: pid, interval: interval, parent: sup_pid}) do
+
+    Logger.error "Scanner died: #{inspect reason} (#{DateTime.utc_now |> DateTime.to_string})"
 
     # See note in handle_cast/2
     _scanner_pid = start_scanner(sup_pid, interval)

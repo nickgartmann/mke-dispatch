@@ -4,19 +4,22 @@ defmodule MkePolice.Scanner do
 
   @name :"MkePolice.Scanner"
 
+  defmodule State do
+    defstruct interval: nil, server_pid: nil
+  end
+
 
   def start_link(sup_pid, restart_interval) do
     GenServer.start_link(__MODULE__, [sup_pid, restart_interval], name: @name)
   end
 
   def init([callback, interval]) do
-    Process.link(callback)
     GenServer.cast(callback, {:scanner_started, self})
     Process.send_after(self(), :scan, interval)
-    {:ok, interval}
+    {:ok, %State{interval: interval, server_pid: callback}}
   end
 
-  def handle_info(:scan, interval) do
+  def handle_info(:scan, state = %{interval: interval}) do
     calls()
     |> Enum.each(fn(call) ->
 
@@ -43,7 +46,7 @@ defmodule MkePolice.Scanner do
      end)
 
     Process.send_after(self(), :scan, interval)
-    {:noreply, interval}
+    {:noreply, state}
   end
 
 
