@@ -15,7 +15,6 @@ defmodule MkePolice do
       # Start your own worker by calling: MkePolice.Worker.start_link(arg1, arg2, arg3)
       # worker(MkePolice.Worker, [arg1, arg2, arg3]),
       supervisor(MkePolice.ScannerSupervisor, [5000])
-      # supervisor(MkePolice.Scanner, [5000])
     ]
 
     HTTPoison.start
