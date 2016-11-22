@@ -2,7 +2,7 @@ defmodule MkePolice.Scanner do
 
   alias MkePolice.{Repo, Call}
 
-  @name : __MODULE__
+  @name __MODULE__
 
   defmodule State do
     defstruct interval: nil, server_pid: nil

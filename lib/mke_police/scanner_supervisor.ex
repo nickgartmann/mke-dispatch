@@ -2,7 +2,7 @@ defmodule MkePolice.ScannerSupervisor do
   require Logger
   use Supervisor
 
-  @name : __MODULE__
+  @name __MODULE__
 
   ## API
 

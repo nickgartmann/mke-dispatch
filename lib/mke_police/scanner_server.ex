@@ -3,7 +3,7 @@ defmodule MkePolice.ScannerServer do
   use GenServer
   import Supervisor.Spec
 
-  @name : __MODULE__
+  @name __MODULE__
 
   defmodule State do
     defstruct interval: nil, parent: nil, scanner: nil, scanner_state: nil
