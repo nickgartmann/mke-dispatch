@@ -1,6 +1,7 @@
 defmodule MkePolice.Scanner do
 
   alias MkePolice.{Repo, Call}
+  import Ecto.Query
 
   @name __MODULE__
 
@@ -22,8 +23,8 @@ defmodule MkePolice.Scanner do
   def handle_info(:scan, state = %{interval: interval}) do
     calls()
     |> Enum.each(fn(call) ->
-
-        rcall = Repo.get(Call, call.id)
+        call_id = call[:call_id]
+        rcall = from(c in Call, where: c.call_id == ^call_id, order_by: [desc: c.inserted_at], limit: 1) |> Repo.one
         {_, call} = Map.get_and_update!(call, :time, fn(current_time) ->
           {current_time, Timex.parse!(current_time, "{0M}/{0D}/{YYYY} {h12}:{m}:{s} {AM}")}
         end)
@@ -38,9 +39,12 @@ defmodule MkePolice.Scanner do
             MkePolice.Endpoint.broadcast("calls:all", "new", rcall)
             MkePolice.Endpoint.broadcast("calls:#{rcall.district}", "new", rcall)
           rcall ->
-            rcall = Repo.update!(Call.changeset(rcall, call))
-            MkePolice.Endpoint.broadcast("calls:all", "update", rcall)
-            MkePolice.Endpoint.broadcast("calls:#{rcall.district}", "update", rcall)
+            if(rcall.status != call[:status] || rcall.nature != call[:nature]) do
+              call = Map.put(call, :point, rcall.point)
+              rcall = Repo.insert!(Call.changeset(%Call{}, call))
+              MkePolice.Endpoint.broadcast("calls:all", "new", rcall)
+              MkePolice.Endpoint.broadcast("calls:#{rcall.district}", "new", rcall)
+            end
         end
 
      end)
@@ -123,7 +127,7 @@ defmodule MkePolice.Scanner do
 
   defp parse_row({_tr, _attrs, children}) do
     %{
-      id: Enum.at(children, 0) |> parse_cell(),
+      call_id: Enum.at(children, 0) |> parse_cell(),
       time: Enum.at(children, 1) |> parse_time_cell(),
       location: Enum.at(children, 2) |> parse_cell(),
       district: Enum.at(children, 3) |> parse_district_cell(),
@@ -145,22 +149,10 @@ defmodule MkePolice.Scanner do
 
 
   defp parse_district_cell({_el, _, children}) do
-
-    district = case Enum.at(children, 0) do
+    case Enum.at(children, 0) do
       nil -> nil
       {"input", _, _} -> nil
       cell -> parse_cell(cell)
-    end
-
-    case district do
-      "NTF"  -> -1
-      "CITY" -> -1
-      "OUT"  -> -1
-      "ICS4" -> -1
-      "OCOE" -> -1
-      nil    -> nil
-      id when is_integer(id) -> String.to_integer(id)
-      _ -> -1
     end
   end
 
