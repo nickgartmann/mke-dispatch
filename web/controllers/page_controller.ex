@@ -10,9 +10,11 @@ defmodule MkePolice.PageController do
 
     calls = from(call in Call,
       where: call.time >= ^start_date and call.time <= ^end_date,
-      distinct: call.call_id,
-      order_by: [desc: call.time, desc: call.inserted_at]
-    ) |> Repo.all
+      distinct: call.call_id
+    ) 
+    |> Repo.all
+    |> Enum.sort_by(fn(call) -> call.time end)
+    |> Enum.reverse()
 
     render conn, "index.html", calls: calls, start_date: start_date, end_date: end_date
   end
@@ -38,9 +40,11 @@ defmodule MkePolice.PageController do
 
     calls = from(call in Call,
       where: call.time >= ^start_date and call.time <= ^end_date,
-      distinct: call.call_id,
-      order_by: [desc: call.time, desc: call.inserted_at]
-    ) |> Repo.all
+      distinct: call.call_id
+    ) 
+    |> Repo.all
+    |> Enum.sort_by(fn(call) -> call.time end)
+    |> Enum.reverse()
 
     csv_content = calls 
       |> Enum.map(&Map.from_struct/1) 
@@ -79,6 +83,7 @@ defmodule MkePolice.PageController do
       order_by: [desc: call.time, desc: call.inserted_at]
     ) |> Repo.all
 
+
     json conn, calls
 
   end
@@ -105,7 +110,10 @@ defmodule MkePolice.PageController do
       where: call.time >= ^start_date and call.time <= ^end_date,
       distinct: call.call_id,
       order_by: [desc: call.time, desc: call.inserted_at]
-    ) |> Repo.all
+    )
+    |> Repo.all
+    |> Enum.sort_by(fn(call) -> call.time end)
+    |> Enum.reverse()
 
     render conn, "map.html", calls: calls, start_date: start_date, end_date: end_date
   end
