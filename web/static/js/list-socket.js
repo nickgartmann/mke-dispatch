@@ -72,6 +72,7 @@ function listSocket() {
     let $tr = document.createElement("tr");
     $tr.setAttribute("data-id", resp.id);
     $tr.innerHTML = `
+    <td class="call_id"></td>
     <td class="time"></td>
     <td class="location"></td>
     <td class="nature"></td>
@@ -89,6 +90,7 @@ function listSocket() {
   })
 
   function render($el, call) {
+    $el.querySelector(".call_id").innerText = call.call_id;
     $el.querySelector(".time").innerText = moment(call.time).format("h:mm a");
     $el.querySelector(".location").innerText = call.location;
     $el.querySelector(".nature").innerText = call.nature;
