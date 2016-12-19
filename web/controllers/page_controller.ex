@@ -8,9 +8,10 @@ defmodule MkePolice.PageController do
     start_date = Timex.parse!(start_date, "{ISO:Extended}")
     end_date = Timex.parse!(end_date, "{ISO:Extended}")
 
-    calls = from(call in Call, 
+    calls = from(call in Call,
       where: call.time >= ^start_date and call.time <= ^end_date,
-      order_by: [desc: call.time]
+      distinct: call.call_id,
+      order_by: [desc: call.time, desc: call.inserted_at]
     ) |> Repo.all
 
     render conn, "index.html", calls: calls, start_date: start_date, end_date: end_date
@@ -35,9 +36,10 @@ defmodule MkePolice.PageController do
     end_date = Timex.parse!("#{end_year}-#{end_month}-#{end_day}", "{YYYY}-{0M}-{0D}")
       |> Timex.end_of_day()
 
-    calls = from(call in Call, 
+    calls = from(call in Call,
       where: call.time >= ^start_date and call.time <= ^end_date,
-      order_by: [desc: call.time]
+      distinct: call.call_id,
+      order_by: [desc: call.time, desc: call.inserted_at]
     ) |> Repo.all
 
     csv_content = calls 
@@ -60,20 +62,21 @@ defmodule MkePolice.PageController do
     |> send_resp(200, csv_content)
   end
 
-  def csv(conn, _) do 
+  def csv(conn, _) do
     render conn, "csv.html"
   end
 
 
   # JSON view of all calls between start and end (datetimes in ISO:Extended)
   def calls(conn, %{"start" => start_date, "end" => end_date}) do
-    
+
     start_date = Timex.parse!(start_date, "{ISO:Extended}")
     end_date = Timex.parse!(end_date, "{ISO:Extended}")
 
-    calls = from(call in Call, 
+    calls = from(call in Call,
       where: call.time >= ^start_date and call.time <= ^end_date,
-      order_by: [desc: call.time]
+      distinct: call.call_id,
+      order_by: [desc: call.time, desc: call.inserted_at]
     ) |> Repo.all
 
     json conn, calls
@@ -98,9 +101,10 @@ defmodule MkePolice.PageController do
     start_date = Timex.parse!(start_date, "{ISO:Extended}")
     end_date = Timex.parse!(end_date, "{ISO:Extended}")
 
-    calls = from(call in Call, 
+    calls = from(call in Call,
       where: call.time >= ^start_date and call.time <= ^end_date,
-      order_by: [desc: call.time]
+      distinct: call.call_id,
+      order_by: [desc: call.time, desc: call.inserted_at]
     ) |> Repo.all
 
     render conn, "map.html", calls: calls, start_date: start_date, end_date: end_date
