@@ -29,6 +29,7 @@
     </colgroup>
     <thead>
       <tr>
+        <th>Call ID</th>
         <th>Time</th>
         <th>Location</th>
         <th>Nature</th>
@@ -38,6 +39,7 @@
     <tbody>
       <%= Enum.map @calls, fn(call) -> %>
         <tr data-id="<%= call.id %>">
+          <td class="call_id"><%= call.call_id %></td>
           <td class="time"><%= format_time(call.time)  %></td>
           <td class="location"><%= call.location %></td>
           <td class="nature"><%= call.nature %></td>
