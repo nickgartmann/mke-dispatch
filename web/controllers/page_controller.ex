@@ -36,9 +36,10 @@ defmodule MkePolice.PageController do
     end_date = Timex.parse!("#{end_year}-#{end_month}-#{end_day}", "{YYYY}-{0M}-{0D}")
       |> Timex.end_of_day()
 
-    calls = from(call in Call, 
+    calls = from(call in Call,
       where: call.time >= ^start_date and call.time <= ^end_date,
-      order_by: [desc: call.time]
+      distinct: call.call_id,
+      order_by: [desc: call.time, desc: call.inserted_at]
     ) |> Repo.all
 
     csv_content = calls 
