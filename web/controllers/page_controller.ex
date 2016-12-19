@@ -8,10 +8,7 @@ defmodule MkePolice.PageController do
     start_date = Timex.parse!(start_date, "{ISO:Extended}")
     end_date = Timex.parse!(end_date, "{ISO:Extended}")
 
-    calls = from(call in Call, 
-      where: call.time >= ^start_date and call.time <= ^end_date,
-      order_by: [desc: call.time]
-    ) |> Repo.all
+    calls = get_calls(start_date, end_date)
 
     render conn, "index.html", calls: calls, start_date: start_date, end_date: end_date
   end
@@ -35,10 +32,7 @@ defmodule MkePolice.PageController do
     end_date = Timex.parse!("#{end_year}-#{end_month}-#{end_day}", "{YYYY}-{0M}-{0D}")
       |> Timex.end_of_day()
 
-    calls = from(call in Call, 
-      where: call.time >= ^start_date and call.time <= ^end_date,
-      order_by: [desc: call.time]
-    ) |> Repo.all
+    calls = get_calls(start_date, end_date)
 
     csv_content = calls 
       |> Enum.map(&Map.from_struct/1) 
@@ -60,21 +54,19 @@ defmodule MkePolice.PageController do
     |> send_resp(200, csv_content)
   end
 
-  def csv(conn, _) do 
+  def csv(conn, _) do
     render conn, "csv.html"
   end
 
 
   # JSON view of all calls between start and end (datetimes in ISO:Extended)
   def calls(conn, %{"start" => start_date, "end" => end_date}) do
-    
+
     start_date = Timex.parse!(start_date, "{ISO:Extended}")
     end_date = Timex.parse!(end_date, "{ISO:Extended}")
 
-    calls = from(call in Call, 
-      where: call.time >= ^start_date and call.time <= ^end_date,
-      order_by: [desc: call.time]
-    ) |> Repo.all
+    calls = get_calls(start_date, end_date)
+
 
     json conn, calls
 
@@ -98,10 +90,7 @@ defmodule MkePolice.PageController do
     start_date = Timex.parse!(start_date, "{ISO:Extended}")
     end_date = Timex.parse!(end_date, "{ISO:Extended}")
 
-    calls = from(call in Call, 
-      where: call.time >= ^start_date and call.time <= ^end_date,
-      order_by: [desc: call.time]
-    ) |> Repo.all
+    calls = get_calls(start_date, end_date)
 
     render conn, "map.html", calls: calls, start_date: start_date, end_date: end_date
   end
@@ -124,6 +113,17 @@ defmodule MkePolice.PageController do
     render conn, "elm.html"
   end
 
+
+  defp get_calls(start_date, end_date) do
+    subquery = from(call in Call,
+      where: call.time >= ^start_date and call.time <= ^end_date,
+      distinct: call.call_id,
+      order_by: [desc: call.time, desc: call.inserted_at]
+    )
+
+    from(c in subquery(subquery), order_by: [desc: c.time])
+    |> Repo.all
+  end
 
   defp default_start_date(), do: Timex.now("America/Chicago") |> Timex.beginning_of_day() |> Timex.format!("{ISO:Extended}")
   defp default_end_date(), do: Timex.now("America/Chicago") |> Timex.format!("{ISO:Extended}")

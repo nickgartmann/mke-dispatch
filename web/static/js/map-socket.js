@@ -10,7 +10,7 @@ function mapSocket() {
   var map = window.map;
   window.featuresSource = new ol.source.Vector();
 
-  fetch("/api/calls").then(function(response) {
+  fetch("/api/calls" + window.location.search).then(function(response) {
   response.json().then(function(calls) {
 
     var features = [];
@@ -32,7 +32,7 @@ function mapSocket() {
         var size = feature.get('features').length
         return new ol.style.Style({
           image: new ol.style.Circle({
-            radius: 8 + (size * 0.10),
+            radius: 8 + (size * 0.05),
             stroke: new ol.style.Stroke({
               color: "#333"
             }),
@@ -63,7 +63,8 @@ function mapSocket() {
     ],
     view: new ol.View({
       center: ol.proj.fromLonLat([-88.306474, 43.038902]),
-      zoom: 10
+      zoom: 10,
+      minZoom: 9
     })
   });
 

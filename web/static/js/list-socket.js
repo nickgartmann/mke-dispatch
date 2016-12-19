@@ -1,5 +1,10 @@
 import {Socket} from "phoenix"
 
+function getParameterByName(name) {
+  var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+  return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
 let socket = new Socket("/socket", {params: {token: window.userToken}})
 
 // When you connect, you'll often need to authenticate the client.
@@ -49,6 +54,9 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 function listSocket() {
   socket.connect()
 
+  let end = moment(getParameterByName("end"));
+  let start = moment(getParameterByName("start"));
+
   // Now that you are connected, you can join channels with a topic:
   let channel = socket.channel("calls:all", {})
   channel.join()
@@ -56,10 +64,15 @@ function listSocket() {
     .receive("error", resp => { console.log("Unable to join", resp) })
 
   channel.on("new", resp => {
+
+    if(end.isValid() && end < moment(resp.time)) return;
+    if(start.isValid() && start > moment(resp.time)) return;
+
     let $table = document.getElementById("calls-table");
     let $tr = document.createElement("tr");
     $tr.setAttribute("data-id", resp.id);
     $tr.innerHTML = `
+    <td class="call_id"></td>
     <td class="time"></td>
     <td class="location"></td>
     <td class="nature"></td>
@@ -68,10 +81,8 @@ function listSocket() {
 
     render($tr, resp);
     $table.querySelector("tbody").insertBefore($tr, $table.querySelector("tbody tr:first-child"));
-
-
-
   })
+
   channel.on("update", resp => {
     let $table = document.getElementById("calls-table");
     let $el = document.querySelector(`[data-id="${resp.id}"]`)
@@ -79,6 +90,7 @@ function listSocket() {
   })
 
   function render($el, call) {
+    $el.querySelector(".call_id").innerText = call.call_id;
     $el.querySelector(".time").innerText = moment(call.time).format("h:mm a");
     $el.querySelector(".location").innerText = call.location;
     $el.querySelector(".nature").innerText = call.nature;
