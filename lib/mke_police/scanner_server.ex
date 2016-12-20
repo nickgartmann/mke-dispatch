@@ -29,7 +29,7 @@ defmodule MkePolice.ScannerServer do
   end
 
   def handle_info(:start_scanner, state = %{interval: interval, parent: sup_pid}) do
-    # Not sure whether to put scanner into state here,
+    # NOTE: Not sure whether to put scanner into state here,
     # or only count it as existing once it sends a message back
     _scanner_pid = start_scanner(sup_pid, interval)
     {:noreply, state}
@@ -40,7 +40,7 @@ defmodule MkePolice.ScannerServer do
 
     Logger.error "Scanner died: #{inspect reason} (#{DateTime.utc_now |> DateTime.to_string})"
 
-    # See note in handle_cast/2
+    # NOTE: See note in handle_cast/2
     _scanner_pid = start_scanner(sup_pid, interval)
     {:noreply, %{state | scanner: nil}}
   end
