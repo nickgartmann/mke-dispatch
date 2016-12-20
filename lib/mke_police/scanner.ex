@@ -1,6 +1,7 @@
 defmodule MkePolice.Scanner do
 
   alias MkePolice.{Repo, Call}
+  require Logger
   import Ecto.Query
 
   @name __MODULE__
@@ -51,6 +52,10 @@ defmodule MkePolice.Scanner do
 
     Process.send_after(self(), :scan, interval)
     {:noreply, state}
+  end
+
+  def terminate(reason, state) do
+    Logger.error "Scanner died: #{inspect reason} (#state)"
   end
 
 
