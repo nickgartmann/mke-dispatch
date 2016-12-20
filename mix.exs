@@ -48,7 +48,8 @@ defmodule MkePolice.Mixfile do
      {:floki, "~> 0.11.0"},
      {:csv, "~> 1.4.2"},
      {:geo, "~> 1.0"},
-     {:ex_doc, "~> 0.14", only: :dev}
+     {:ex_doc, "~> 0.14", only: :dev},
+     {:certifi, "~> 0.7"}
    ]
   end
 

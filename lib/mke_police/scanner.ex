@@ -1,18 +1,27 @@
-defmodule MkePolice.Scanner do 
+defmodule MkePolice.Scanner do
 
   alias MkePolice.{Repo, Call}
+  require Logger
   import Ecto.Query
 
-  def start_link(restart_interval) do 
-    GenServer.start_link(__MODULE__, restart_interval)
+  @name __MODULE__
+
+  defmodule State do
+    defstruct interval: nil, server_pid: nil
   end
 
-  def init(interval) do
+
+  def start_link(sup_pid, restart_interval) do
+    GenServer.start_link(__MODULE__, [sup_pid, restart_interval], name: @name)
+  end
+
+  def init([callback, interval]) do
+    GenServer.cast(callback, {:scanner_started, self})
     Process.send_after(self(), :scan, interval)
-    {:ok, interval}
+    {:ok, %State{interval: interval, server_pid: callback}}
   end
 
-  def handle_info(:scan, interval) do
+  def handle_info(:scan, state = %{interval: interval}) do
     calls()
     |> Enum.each(fn(call) ->
         call_id = call[:call_id]
@@ -22,8 +31,8 @@ defmodule MkePolice.Scanner do
         end)
 
         case rcall do
-          nil   -> 
-            call = case Geocode.lookup(call.location) do 
+          nil   ->
+            call = case Geocode.lookup(call.location) do
               {nil, nil} -> call
               {lat, lng} -> Map.put(call, :point, %Geo.Point{coordinates: {lng, lat}, srid: 4326})
             end
@@ -42,7 +51,11 @@ defmodule MkePolice.Scanner do
      end)
 
     Process.send_after(self(), :scan, interval)
-    {:noreply, interval}
+    {:noreply, state}
+  end
+
+  def terminate(reason, state) do
+    Logger.error "Scanner died: #{inspect reason} (#state)"
   end
 
 
@@ -53,13 +66,13 @@ defmodule MkePolice.Scanner do
   defp get_calls(pages \\ nil)
   defp get_calls(nil), do: get_calls(get_page())
   defp get_calls(%{calls: calls, page: {x, x}, view_state: view_state, cookies: cookies}), do: calls
-  defp get_calls(%{calls: calls, page: {current_page, end_page}, view_state: view_state, cookies: cookies}) do 
+  defp get_calls(%{calls: calls, page: {current_page, end_page}, view_state: view_state, cookies: cookies}) do
     calls ++ get_calls(get_page(view_state, cookies))
   end
-  
+
 
   defp get_page() do
-    response = HTTPoison.get!("http://itmdapps.milwaukee.gov/MPDCallData/currentCADCalls/callsService.faces") 
+    response = HTTPoison.get!("http://itmdapps.milwaukee.gov/MPDCallData/currentCADCalls/callsService.faces")
 
     view_state = response.body
     |> Floki.find("[name='javax.faces.ViewState']")
@@ -70,7 +83,7 @@ defmodule MkePolice.Scanner do
 
 
     calls = response
-    |> Map.get(:body) 
+    |> Map.get(:body)
     |> Floki.find("[id*='formId:tableExUpdateId'] tbody tr")
     |> Enum.map(&parse_row/1)
 
@@ -94,7 +107,7 @@ defmodule MkePolice.Scanner do
       {"formId:tableExUpdateId:deluxe1__pagerNext.x", 11},
       {"formId:tableExUpdateId:deluxe1__pagerNext.y", 11},
       {"javax.faces.ViewState", view_state}
-    ]}, %{}, hackney: [cookie: cookies]) 
+    ]}, %{}, hackney: [cookie: cookies])
 
     view_state = response.body
     |> Floki.find("[name='javax.faces.ViewState']")
@@ -104,7 +117,7 @@ defmodule MkePolice.Scanner do
     |> Keyword.fetch!(:value)
 
     calls = response
-    |> Map.get(:body) 
+    |> Map.get(:body)
     |> Floki.find("[id*='formId:tableExUpdateId'] tbody tr")
     |> Enum.map(&parse_row/1)
 
@@ -123,7 +136,7 @@ defmodule MkePolice.Scanner do
       time: Enum.at(children, 1) |> parse_time_cell(),
       location: Enum.at(children, 2) |> parse_cell(),
       district: Enum.at(children, 3) |> parse_district_cell(),
-      nature: Enum.at(children, 4) |> parse_cell(), 
+      nature: Enum.at(children, 4) |> parse_cell(),
       status: Enum.at(children, 5) |> parse_cell()
     }
   end
@@ -139,7 +152,7 @@ defmodule MkePolice.Scanner do
     rest
   end
 
-  
+
   defp parse_district_cell({_el, _, children}) do
     case Enum.at(children, 0) do
       nil -> nil
@@ -156,7 +169,7 @@ defmodule MkePolice.Scanner do
     end
   end
 
-  defp parse_page("Page " <> pages) do 
+  defp parse_page("Page " <> pages) do
     [current, total] = String.split(pages, " of ") |> Enum.map(&String.to_integer/1)
     {current, total}
   end
