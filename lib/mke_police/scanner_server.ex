@@ -38,7 +38,7 @@ defmodule MkePolice.ScannerServer do
   def handle_info({:EXIT, pid, reason},
     state = %{scanner: pid, interval: interval, parent: sup_pid}) do
 
-    Logger.error "Scanner died: #{inspect reason} (#{DateTime.utc_now |> DateTime.to_string})"
+    Logger.error "[-] Scanner died: #{inspect reason} (#{DateTime.utc_now |> DateTime.to_string})"
 
     # NOTE: See note in handle_cast/2
     _scanner_pid = start_scanner(sup_pid, interval)
@@ -51,6 +51,7 @@ defmodule MkePolice.ScannerServer do
     opts = [name: "MkePolice.Scanner", restart: :temporary]
     scanner = worker(MkePolice.Scanner, [self, interval], opts)
     {:ok, scanner_pid} = Supervisor.start_child(sup_pid, scanner)
+    Logger.debug "[+] Scanner restarted: #{inspect scanner} (#{DateTime.utc_now |> DateTime.to_string})"
     scanner_pid
   end
 
