@@ -37,7 +37,7 @@ defmodule MkePolice.Mixfile do
   defp deps do
     [{:phoenix, "~> 1.2.0"},
      {:phoenix_pubsub, "~> 1.0"},
-     {:phoenix_ecto, "~> 3.0"},
+     {:phoenix_ecto, "~> 3.3.0"},
      {:postgrex, ">= 0.0.0"},
      {:phoenix_html, "~> 2.6"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
@@ -47,9 +47,10 @@ defmodule MkePolice.Mixfile do
      {:timex, "~> 3.1.0"},
      {:floki, "~> 0.11.0"},
      {:csv, "~> 1.4.2"},
-     {:geo, "~> 1.0"},
+     {:geo, "~> 3.0"},
      {:ex_doc, "~> 0.14", only: :dev},
-     {:certifi, "~> 0.7"}
+     {:certifi, "~> 0.7"},
+     {:geo_postgis, "~> 2.0"}
    ]
   end
 

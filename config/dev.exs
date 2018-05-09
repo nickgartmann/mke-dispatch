@@ -1,5 +1,7 @@
 use Mix.Config
 
+
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
@@ -44,4 +46,4 @@ config :mke_police, MkePolice.Repo,
   database: "mke_police_dev",
   hostname: "localhost",
   pool_size: 10,
-  extensions: [{Geo.PostGIS.Extension, library: Geo}]
+  types: MkePolice.PostgresTypes

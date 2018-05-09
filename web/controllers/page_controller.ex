@@ -32,21 +32,24 @@ defmodule MkePolice.PageController do
     end_date = Timex.parse!("#{end_year}-#{end_month}-#{end_day}", "{YYYY}-{0M}-{0D}")
       |> Timex.end_of_day()
 
-    calls = get_calls(start_date, end_date)
 
-    csv_content = calls 
-      |> Enum.map(&Map.from_struct/1) 
-      |> Enum.map(fn(call) ->
-        {longitude, latitude} = case call.point do 
-          nil -> {nil, nil}
-          pt  -> {lng, lat} = pt.coordinates 
-        end
-        call
-        |> Map.put(:latitude, latitude)
-        |> Map.put(:longitude, longitude)
-      end)
-      |> CSV.encode(headers: [:id, :time, :location, :latitude, :longitude, :district, :nature, :status] ) 
-      |> Enum.to_list()
+    {:ok, csv_content} = Repo.transaction fn ->
+      calls = calls_query(start_date, end_date) |> Repo.stream(max_rows: 50)
+
+      calls 
+        |> Stream.map(&Map.from_struct/1) 
+        |> Stream.map(fn(call) ->
+          {longitude, latitude} = case call.point do 
+            nil -> {nil, nil}
+            pt  -> {lng, lat} = pt.coordinates 
+          end
+          call
+          |> Map.put(:latitude, latitude)
+          |> Map.put(:longitude, longitude)
+        end)
+        |> CSV.encode(headers: [:id, :time, :location, :latitude, :longitude, :district, :nature, :status] ) 
+        |> Enum.to_list()
+    end
 
     conn
     |> put_resp_content_type("text/csv")
@@ -114,15 +117,19 @@ defmodule MkePolice.PageController do
   end
 
 
+
   defp get_calls(start_date, end_date) do
+    subquery = calls_query(start_date, end_date)
+    from(c in subquery(subquery), order_by: [desc: c.time])
+    |> Repo.all
+  end
+
+  defp calls_query(start_date, end_date) do
     subquery = from(call in Call,
       where: call.time >= ^start_date and call.time <= ^end_date,
       distinct: call.call_id,
       order_by: [desc: call.time, desc: call.inserted_at]
     )
-
-    from(c in subquery(subquery), order_by: [desc: c.time])
-    |> Repo.all
   end
 
   defp default_start_date(), do: Timex.now("America/Chicago") |> Timex.beginning_of_day() |> Timex.format!("{ISO:Extended}")

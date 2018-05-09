@@ -9,7 +9,7 @@ defmodule MkePolice.Call do
     field :status, :string
     field :call_id, :string
 
-    field :point, Geo.Point
+    field :point, Geo.PostGIS.Geometry
 
     timestamps()
   end
