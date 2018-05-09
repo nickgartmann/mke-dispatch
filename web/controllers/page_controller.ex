@@ -34,7 +34,7 @@ defmodule MkePolice.PageController do
 
 
     {:ok, csv_content} = Repo.transaction fn ->
-      calls = calls_query(start_date, end_date) |> Repo.stream(max_rows: 2000)
+      calls = calls_query(start_date, end_date) |> Repo.stream(max_rows: 10000)
 
       calls 
         |> Stream.map(&Map.from_struct/1) 
