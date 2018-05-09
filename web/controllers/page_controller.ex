@@ -33,7 +33,7 @@ defmodule MkePolice.PageController do
       |> Timex.end_of_day()
 
 
-    csv_content = Repo.transaction fn ->
+    {:ok, csv_content} = Repo.transaction fn ->
       calls = calls_query(start_date, end_date) |> Repo.stream(max_rows: 50)
 
       calls 

@@ -20,7 +20,7 @@ config :mke_police, MkePolice.Repo,
   url: System.get_env("DATABASE_URL"),
   pool_size: 10,
   ssl: true,
-  extensions: [{Geo.PostGIS.Extension, library: Geo}]
+  types: MkePolice.PostgresTypes
 
 config :mke_police, Geocode,
   google_api_key: System.get_env("GOOGLE_GEOCODE_API_KEY")
