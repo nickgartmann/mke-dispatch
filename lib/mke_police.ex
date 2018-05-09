@@ -6,6 +6,9 @@ defmodule MkePolice do
   def start(_type, _args) do
     import Supervisor.Spec
 
+
+    
+
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository
