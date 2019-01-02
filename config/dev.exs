@@ -29,7 +29,7 @@ config :mke_police, MkePolice.Endpoint,
   ]
 
 config :mke_police, Geocode,
-  google_api_key: "AIzaSyBNfEiOtth2yH7j2RvDmurYY-QIvZAY_rw"
+  google_api_key: "PUT_API_KEY_HERE"
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
