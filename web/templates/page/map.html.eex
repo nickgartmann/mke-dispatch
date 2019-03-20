@@ -1,5 +1,5 @@
-<script src="https://openlayers.org/en/v3.19.0/build/ol.js"></script>
-<link rel="stylesheet" href="https://openlayers.org/en/v3.19.0/css/ol.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.19.0/ol.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.19.0/ol.css" type="text/css">
 
 <br />
 <div class="usa-grid">
@@ -7,7 +7,7 @@
   This project is an effort to provide a more useful view of the Milwaukee Police Department (MPD) call dispatch log, which is provided
   by the MPD <a href="http://itmdapps.milwaukee.gov/MPDCallData/currentCADCalls/callsService.faces">here</a>. Their live feed provides the most recent 90 minutes of calls dispatched. This dataset attempts to catalog
   the entire history, going back to October 19, 2016 (the start of this project). If you would like to contribute to this project, or request
-  changes, please email <a href="mailto:nick@rokkincat.com">nick@rokkincat.com</a>. The hosting and development of this project has been 
+  changes, please email <a href="mailto:nick@rokkincat.com">nick@rokkincat.com</a>. The hosting and development of this project has been
   donated by the local software contracting firm <a href="http://www.rokkincat.com/">RokkinCat</a>.
   </p>
 </div>
@@ -21,7 +21,7 @@
   <div class="usa-width-one-third" style="text-align: right;">
     <a class="usa-button usa-button-gray" href="/map">Today</a>
     <a style="margin-right: 0px;" href="/map?start=<%= @start_date |> Timex.shift(days: 1) |> Timex.format!("{ISO:Extended}") %>&end=<%= @end_date |> Timex.end_of_day() |> Timex.shift(days: 1) |> Timex.format!("{ISO:Extended}") %>" class="usa-button">
-      <%= @start_date |> Timex.shift(days: 1) |> Timex.format!("{Mshort} {0D}") %>&nbsp;&nbsp;&#10142; 
+      <%= @start_date |> Timex.shift(days: 1) |> Timex.format!("{Mshort} {0D}") %>&nbsp;&nbsp;&#10142;
     </a>
   </div>
 </div>
