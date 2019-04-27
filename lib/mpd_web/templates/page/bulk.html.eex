@@ -1,0 +1,6 @@
+<h1>Accessing Bulk Data Exports</h1>
+<p>
+This project has call data dating back to October 19, 2016. 
+If you would like a bulk export of data for specific date ranges, call natures, or districts, you can email Nick Gartmann at
+<%= link("nick@rokkincat.com", to: "mailto:nick@rokkincat.com") %> with the details of your request.
+</p>

@@ -1,0 +1,8 @@
+<h1>How to Contribute</h1>
+<p>
+This service is provided for free by <%= link("RokkinCat", to: "https://www.rokkincat.com", target: "__blank") %>, a custom software contracting agency in Milwaukee. 
+If you want to help offset project costs with a cash contribution, you can email <%= link("nick@rokkincat.com", to: "mailto:nick@rokkincat.com") %>. 
+The code for this project is open source and available on <%= link("github", to: "https://www.github.com/nickgartmann/mke-dispatch", target: "__blank") %>, if you are a programmer and would like to add features feel free to submit a pull request to that repository.
+The project is developed in Elixir on the Phoenix framework and using the United States Digital Services design framework.
+</p>
+

@@ -1,0 +1,14 @@
+<h1>About the MPD Call Logs</h1>
+<p>
+The Milwaukee Police Department publishes call information on <%= link("their website", to: "https://itmdapps.milwaukee.gov/MPDCallData/", target: "__blank") %>, but it has some restrictions.
+The calls listed on their site are delayed by 30 minutes from their actual occurrance and the call information is only visible on their website for 60 minutes. 
+That means that 90 minutes after a dispatch call, the record is no longer available to the public. 
+</p>
+<p>
+This website monitors the official MPD calls for service in five minute intervals and stores those calls in a separate location.
+By doing this, it is possible to preserve the call information as public information forever without the need for a FOIA request.
+</p>
+<p>
+This service is provided for free by <%= link("RokkinCat", to: "https://www.rokkincat.com", target: "__blank") %>, a custom software contracting agency in Milwaukee. 
+If you would like to contribute in some way, see our contribution guide <%= link("here", to: Routes.page_path(@conn, :contribute)) %>.
+</p>

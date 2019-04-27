@@ -1,0 +1,80 @@
+<br />
+<div class="usa-alert usa-alert--info display-none tablet:display-block" >
+  <div class="usa-alert__body">
+    <h3 class="usa-alert__heading">This is not an official MPD website</h3>
+    <p class="usa-alert__text">
+    This project is an effort to provide a more useful view of the Milwaukee Police Department (MPD) call dispatch log, which is provided by the MPD <a href="https://itmdapps.milwaukee.gov/MPDCallData/">here</a>. 
+    Their live feed provides the most recent 90 minutes of calls dispatched. 
+    This dataset attempts to catalog the entire history back to October 19, 2016 (the start of this project). 
+    </p>
+  </div>
+</div>
+
+<% previous_day = Date.add(@date, -1) %>
+<% next_day = Date.add(@date, 1) %>
+<% today = Date.utc_today() %>
+
+<div class="usa-section">
+  <div class="grid-row display-none tablet:display-flex">
+    <div class="grid-col">
+      <%= link(raw("<span style='transform: scaleX(-1); display: inline-block;'>&#x2794;</span>&nbsp;&nbsp;#{render_date(previous_day)}"), to: "/?date=#{previous_day}", class: "usa-button") %>
+    </div>
+    <div class="grid-col text-center">
+      <em class="font-ui-lg"><%= render_date(@date) %></em>
+    </div>
+    <div class="grid-col text-right">
+      <%= link("Today", to: "/?date=#{Date.utc_today()}", class: "usa-button usa-button--base") %>
+      <%= link(raw("#{render_date(next_day)}&nbsp;&nbsp;&#x2794;"), to: "/?date=#{next_day}", class: "usa-button") %>
+    </div>
+  </div>
+  <div class="tablet:display-none">
+    <div class="grid-row padding-bottom-2">
+      <div class="grid-col text-center">
+        <em class="font-ui-lg"><%= render_date(@date) %></em>
+      </div>
+    </div>
+    <div class="grid-row padding-bottom-2">
+      <div class="grid-col text-center">
+        <%= link("Today", to: "/?date=#{today}", class: "usa-button usa-button--base") %>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="grid-col padding-right-1">
+        <button class="usa-button">
+          <%= link(raw("<span style='transform: scaleX(-1); display: inline-block;'>&#x2794;</span>&nbsp;&nbsp;#{render_date(previous_day)}"), to: "/?date=#{previous_day}", class: "usa-button") %>
+        </button>
+      </div>
+      <div class="grid-col text-right padding-left-1">
+        <%= link(raw("#{render_date(next_day)}&nbsp;&nbsp;&#x2794;"), to: "/?date=#{next_day}", class: "usa-button") %>
+      </div>
+    </div>
+  </div>
+  <table class="usa-table width-full">
+    <thead>
+      <tr>
+        <th scope="col">Time</th>
+        <th scope="col">Location</th>
+        <th scope="col">Nature</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= if Enum.count(@calls) == 0 do %>
+        <tr>
+          <td colspan="4">No data for this date, try <%= link(render_date(today), to: "/?date=#{today}") %></td>
+        </tr>
+      <% end %> 
+      <%= Enum.map @calls, fn(call) -> %>
+      <tr class="text-top">
+        <td><%= render_time(call.time) %></td>
+        <td><%= call.location %></td>
+        <td><%= call.nature %></td>
+        <td>
+          <%= call.status %><br />
+          <a href="/call/<%= call.call_id %>" class="font-sans-xs">View History</a>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

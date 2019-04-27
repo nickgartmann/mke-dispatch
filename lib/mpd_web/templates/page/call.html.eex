@@ -1,0 +1,76 @@
+<br />
+<div class="usa-alert usa-alert--info" >
+  <div class="usa-alert__body">
+    <h3 class="usa-alert__heading">This is not an official MPD website</h3>
+    <p class="usa-alert__text">
+    This project is an effort to provide a more useful view of the Milwaukee Police Department (MPD) call dispatch log, which is provided by the MPD <a href="https://itmdapps.milwaukee.gov/MPDCallData/">here</a>. 
+    Their live feed provides the most recent 90 minutes of calls dispatched. 
+    This dataset attempts to catalog the entire history back to October 19, 2016 (the start of this project). 
+    </p>
+  </div>
+</div>
+
+<% call = hd(@calls) %>
+<% {lat, lng} = call.point.coordinates %>
+
+<div class="">
+  <div class="grid-row">
+    <div class="grid-col padding-right-1">
+      <table class="usa-table width-full">
+        <thead>
+          <tr>
+            <th colspan="2">Basic Information</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>ID</th>
+            <td><%= call.id %></td>
+          </tr>
+          <tr>
+            <th>District</th>
+            <td><%= call.district %></td>
+          </tr>
+          <tr>
+            <th>Location</th>
+            <td><%= call.location %></td>
+          </tr>
+          <tr>
+            <th>Nature</th>
+            <td><%= call.nature %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid-col padding-left-1">
+      <table class="usa-table width-full">
+        <thead>
+          <tr>
+            <th colspan="2">Status History</th>
+          </tr>
+          <tr>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= Enum.map @calls, fn(call) -> %>
+            <tr class="text-top">
+              <td><%= render_time(call.time) %></td>
+              <td>
+                <%= call.status %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <%= if lat && lng do %>
+    <img class="width-full" src="https://api.mapbox.com/styles/v1/mapbox/light-v10/static/pin-s+005ea2(<%= "#{lng},#{lat}" %>)/<%= "#{lng},#{lat}" %>,14,0,00/1200x400?access_token=pk.eyJ1Ijoicm9ra2luY2F0YWRtaW4iLCJhIjoiY2l5NG54MGM5MDAybzJxcDJ2aHZqZW0zeiJ9.JFNvE7S97BujYDP7U9xPqQ">
+    <br />
+  <% end %>
+</div>
+<br />
+<br />
+<br />
