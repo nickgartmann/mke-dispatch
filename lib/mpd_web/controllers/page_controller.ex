@@ -11,7 +11,10 @@ defmodule MpdWeb.PageController do
 
   def calls(conn, %{"id" => id}) do
     calls = Mpd.Calls.get_by_id(id)
-    render(conn, "call.html", calls: calls)
+    call = hd(calls)
+    {lat, lng} = get_lat_lng(call)
+
+    render(conn, "call.html", calls: calls, lat: lat, lng: lng, call: call)
   end
 
   def about(conn, _) do
@@ -25,4 +28,8 @@ defmodule MpdWeb.PageController do
   def bulk(conn, _) do
     render(conn, "bulk.html")
   end
+
+  defp get_lat_lng(nil), do: {nil, nil}
+  defp get_lat_lng(%{point: nil}), do: {nil, nil}
+  defp get_lat_lng(%{point: %{coordinates: {lat, lng}}}), do: {lat, lng}
 end

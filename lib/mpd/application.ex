@@ -11,7 +11,8 @@ defmodule Mpd.Application do
       # Start the Ecto repository
       Mpd.Repo,
       # Start the endpoint when the application starts
-      MpdWeb.Endpoint
+      MpdWeb.Endpoint,
+      {Mpd.Scanner, 120_000}
       # Starts a worker by calling: Mpd.Worker.start_link(arg)
       # {Mpd.Worker, arg},
     ]
