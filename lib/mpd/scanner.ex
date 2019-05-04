@@ -51,6 +51,7 @@ defmodule Mpd.Scanner do
 
      end)
 
+    Mpd.ScannerUpdate.notify_live_view_new_calls()
     Process.send_after(self(), :scan, scan_interval)
     {:noreply, state}
   end
@@ -82,6 +83,9 @@ defmodule Mpd.Scanner do
 
   defp parse_date(string) do
     case datetime(string) do
+      {:ok, [month, day, year, 12, minute, second, "PM"], _, _, _, _} ->
+        %NaiveDateTime{month: month, day: day, year: year, hour: 12, minute: minute,
+          second: second}
       {:ok, [month, day, year, hour, minute, second, "PM"], _, _, _, _} ->
         %NaiveDateTime{month: month, day: day, year: year, hour: hour + 12, minute: minute,
           second: second}

@@ -3,8 +3,9 @@ defmodule MpdWeb.PageController do
 
   def index(conn, %{"date" => date}) do
     {:ok, date} = Date.from_iso8601(date)
-    calls = Mpd.Calls.list_date(date)
-    render(conn, "index.html", calls: calls, date: date)
+    Phoenix.LiveView.Controller.live_render(conn, MpdWeb.CallIndexLive, session: %{
+      date: date
+    })
   end
 
   def index(conn, _), do: index(conn, %{"date" => Date.to_string(Date.utc_today())})

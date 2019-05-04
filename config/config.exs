@@ -15,7 +15,10 @@ config :mpd, MpdWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "ct0SwD+lm4K1AXPfi1Q20PhJjL+8tWjusuPWlMCyJyCRbvAcKeuvbSwTakjqSczt",
   render_errors: [view: MpdWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Mpd.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Mpd.PubSub, adapter: Phoenix.PubSub.PG2],
+  live_view: [
+    signing_salt: "SdQ4WK8UvPmhFoxORdLqovyhKjSlvECG"
+  ]
 
 # Configures Elixir's Logger
 config :logger, :console,

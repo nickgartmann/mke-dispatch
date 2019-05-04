@@ -5,6 +5,8 @@ defmodule MpdWeb.Endpoint do
     websocket: true,
     longpoll: false
 
+  socket "/live", Phoenix.LiveView.Socket
+
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phx.digest
@@ -12,8 +14,8 @@ defmodule MpdWeb.Endpoint do
   plug Plug.Static,
     at: "/",
     from: :mpd,
-    gzip: false,
-    only: ~w(vendor mpd favicon.ico robots.txt)
+    gzip: true,
+    only: ~w(js css vendor mpd favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

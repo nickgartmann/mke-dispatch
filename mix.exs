@@ -47,6 +47,7 @@ defmodule Mpd.MixProject do
       {:floki, "~> 0.21.0"},
       {:hackney, "~> 1.11"},
       {:nimble_parsec, "~> 0.5.0"},
+      {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"},
     ]
   end
 
