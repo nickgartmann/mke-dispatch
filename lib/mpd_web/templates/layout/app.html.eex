@@ -5,10 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>MKE Police Department Call Logs</title>
-    <link rel="stylesheet" media="all" href="<%= Routes.static_path(@conn,"/mpd/vendor/css/normalize.css") %>"></script>
-    <link rel="stylesheet" media="all" href="<%= Routes.static_path(@conn,"/mpd/vendor/css/uswds.min.css") %>"></script>
-    <link rel="stylesheet" media="all" href="<%= Routes.static_path(@conn,"/mpd/components.css") %>"></script>
-    <script type="text/javascript" src="<%= Routes.static_path(@conn,"/mpd/vendor/js/uswds.min.js") %>"></script>
+    <link rel="stylesheet" media="all" href="<%= Routes.static_path(@conn,"/css/normalize.css") %>"></script>
+    <link rel="stylesheet" media="all" href="<%= Routes.static_path(@conn,"/css/uswds.min.css") %>"></script>
+    <script type="text/javascript" src="<%= Routes.static_path(@conn,"/js/uswds.min.js") %>"></script>
   </head>
   <body>
     <header class="usa-header usa-header-basic" role="banner">
@@ -22,7 +21,7 @@
             <button class="usa-menu-btn">Menu</button>
           </div>
           <nav role="navigation" class="usa-nav">
-            <button class="usa-nav__close"><img src="<%= Routes.static_path(@conn, "/mpd/vendor/img/close.svg") %>" alt="close"></button>
+            <button class="usa-nav__close"><img src="<%= Routes.static_path(@conn, "/img/close.svg") %>" alt="close"></button>
             <ul class="usa-nav__primary usa-accordion">
               <li class="usa-nav__primary-item">
                 <%= link("About", to: Routes.page_path(@conn, :about), class: "usa-nav__link") %>
