@@ -42,6 +42,8 @@ defmodule Mpd.Geocode do
   end
 
   defp url(address) do
-    "https://maps.googleapis.com/maps/api/geocode/json?address=#{URI.encode(address)}&key=#{Application.get_env(:mke_police, Geocode)[:google_api_key]}"
+    "https://maps.googleapis.com/maps/api/geocode/json?address=#{URI.encode(address)}&key=#{key()}"
   end
+
+  defp key(), do: Application.get_env(:mpd, Geocode)[:google_api_key]
 end

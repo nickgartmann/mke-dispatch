@@ -14,6 +14,16 @@ config :mpd, MpdWeb.Endpoint,
   url: [scheme: "https", host: "mpd.digitalpublicworks.com", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
+config :mpd, Mpd.Repo,
+  url: System.get_env("DATABASE_URL"),
+  ssl: true,
+  pool_size: 10,
+  types: Mpd.PostgresTypes
+
+config :mpd, Geocode,
+  google_api_key: System.get_env("GOOGLE_GEOCODE_API_KEY")
+
+
 # Do not print debug messages in production
 config :logger, level: :info
 
@@ -68,4 +78,4 @@ config :logger, level: :info
 
 # Finally import the config/prod.secret.exs which should be versioned
 # separately.
-import_config "prod.secret.exs"
+#import_config "prod.secret.exs"
