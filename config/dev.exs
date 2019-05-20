@@ -67,19 +67,11 @@ config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
 # Configure your database
-"""
 config :mpd, Mpd.Repo,
   username: "postgres",
   password: "postgres",
-  database: "mpd_dev",
+  database: "mke_police_dev",
   hostname: "localhost",
   pool_size: 10,
-  types: MPD.PostgresTypes
-"""
-
-config :mpd, Mpd.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  url: System.get_env("DATABASE_URL"),
-  pool_size: 10,
-  ssl: true,
   types: Mpd.PostgresTypes
+
