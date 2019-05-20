@@ -10,9 +10,6 @@
   </div>
 </div>
 
-<% call = hd(@calls) %>
-<% {lat, lng} = call.point.coordinates %>
-
 <div class="">
   <div class="grid-row">
     <div class="grid-col padding-right-1">
@@ -25,19 +22,19 @@
         <tbody>
           <tr>
             <th>ID</th>
-            <td><%= call.id %></td>
+            <td><%= @call.id %></td>
           </tr>
           <tr>
             <th>District</th>
-            <td><%= call.district %></td>
+            <td><%= @call.district %></td>
           </tr>
           <tr>
             <th>Location</th>
-            <td><%= call.location %></td>
+            <td><%= @call.location %></td>
           </tr>
           <tr>
             <th>Nature</th>
-            <td><%= call.nature %></td>
+            <td><%= @call.nature %></td>
           </tr>
         </tbody>
       </table>
@@ -66,8 +63,8 @@
       </table>
     </div>
   </div>
-  <%= if lat && lng do %>
-    <img class="width-full" src="https://api.mapbox.com/styles/v1/mapbox/light-v10/static/pin-s+005ea2(<%= "#{lng},#{lat}" %>)/<%= "#{lng},#{lat}" %>,14,0,00/1200x400?access_token=pk.eyJ1Ijoicm9ra2luY2F0YWRtaW4iLCJhIjoiY2l5NG54MGM5MDAybzJxcDJ2aHZqZW0zeiJ9.JFNvE7S97BujYDP7U9xPqQ">
+  <%= if @lat && @lng do %>
+    <img class="width-full" src="https://api.mapbox.com/styles/v1/mapbox/light-v10/static/pin-s+005ea2(<%= "#{@lng},#{@lat}" %>)/<%= "#{@lng},#{@lat}" %>,14,0,00/1200x400?access_token=pk.eyJ1Ijoicm9ra2luY2F0YWRtaW4iLCJhIjoiY2l5NG54MGM5MDAybzJxcDJ2aHZqZW0zeiJ9.JFNvE7S97BujYDP7U9xPqQ">
     <br />
   <% end %>
 </div>

@@ -13,11 +13,10 @@ config :mpd, MpdWeb.Endpoint,
   check_origin: false,
   watchers: [
     node: [
-      "node_modules/@stencil/core/bin/stencil",
-      "build",
-      "copy",
-      "--dev",
-      "--watch",
+      "node_modules/webpack/bin/webpack.js",
+      "--mode",
+      "development",
+      "--watch-stdin",
       cd: Path.expand("../assets", __DIR__)
     ]
   ]
