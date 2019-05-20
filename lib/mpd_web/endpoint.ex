@@ -15,7 +15,7 @@ defmodule MpdWeb.Endpoint do
     at: "/",
     from: :mpd,
     gzip: true,
-    only: ~w(js css vendor mpd favicon.ico robots.txt)
+    only: ~w(js css img fonts favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
