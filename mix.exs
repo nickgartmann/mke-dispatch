@@ -20,7 +20,7 @@ defmodule Mpd.MixProject do
   def application do
     [
       mod: {Mpd.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :sentry, :runtime_tools]
     ]
   end
 
@@ -48,7 +48,8 @@ defmodule Mpd.MixProject do
       {:hackney, "~> 1.11"},
       {:nimble_parsec, "~> 0.5.0"},
       {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"},
-      {:tzdata, "~> 1.0.0"}
+      {:tzdata, "~> 1.0.0"},
+      {:sentry, "~> 6.4"}
     ]
   end
 

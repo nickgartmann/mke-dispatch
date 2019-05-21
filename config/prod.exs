@@ -27,6 +27,15 @@ config :mpd, :mapbox,
   api_key: System.get_env("MAPBOX_API_KEY")
 
 
+config :sentry,
+  dsn: "https://57e3ba9b9bef48e2bf45aea1c90b060d@sentry.io/1464892",
+  environment_name: :prod,
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!,
+  tags: %{
+    env: "production"
+  },
+  included_environments: [:prod]
 
 # Do not print debug messages in production
 config :logger, level: :info
