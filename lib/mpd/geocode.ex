@@ -2,6 +2,9 @@ defmodule Mpd.Geocode do
   import Ecto.Query
 
   def lookup(address) do case lookup_from_database(address) do
+      {:ok, {nil, nil}} ->
+        {:ok, coordinates} = lookup_from_google(address)
+        coordinates
       {:ok, coordinates} ->
         coordinates
       {:error, _} ->
