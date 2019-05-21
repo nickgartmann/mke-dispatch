@@ -35,7 +35,7 @@ defmodule Mpd.Scanner do
           nil   ->
             call = case Mpd.Geocode.lookup(call.location) do
               {nil, nil} -> call
-              {lat, lng} -> Map.put(call, :point, %Geo.Point{coordinates: {lng, lat}, srid: 4326})
+              {lat, lng} -> Map.put(call, :point, %Geo.Point{coordinates: {lat, lng}, srid: 4326})
             end
             rcall = Repo.insert!(Call.changeset(%Call{}, call))
           rcall ->
