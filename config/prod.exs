@@ -12,7 +12,8 @@ use Mix.Config
 config :mpd, MpdWeb.Endpoint,
   http: [:inet6, port: System.get_env("PORT") || 4000],
   url: [scheme: "https", host: "mpd.digitalpublicworks.com", port: 80],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  check_origin: ["//mpd.digitalpublicworks.com", "//mke-police.herokuapp.com"]
 
 config :mpd, Mpd.Repo,
   url: System.get_env("DATABASE_URL"),
