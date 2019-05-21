@@ -19,6 +19,6 @@ defmodule Mpd.Calls.Call do
   def changeset(call, attrs) do
     call
     |> cast(attrs, [:time, :location, :district, :nature, :status, :call_id, :point])
-    |> validate_required([:time, :location, :district, :nature, :status, :call_id, :point])
+    |> validate_required([:time, :location, :district, :nature, :status, :call_id])
   end
 end
