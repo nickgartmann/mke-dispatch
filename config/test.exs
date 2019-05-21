@@ -15,4 +15,5 @@ config :mpd, Mpd.Repo,
   password: "postgres",
   database: "mpd_test",
   hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+  pool: Ecto.Adapters.SQL.Sandbox,
+  types: Mpd.PostgresTypes
