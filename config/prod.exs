@@ -17,8 +17,7 @@ config :mpd, MpdWeb.Endpoint,
 
 config :mpd, Mpd.Repo,
   url: System.get_env("DATABASE_URL"),
-  ssl: true,
-  pool_size: 10,
+  pool_size: 20,
   types: Mpd.PostgresTypes
 
 config :mpd, Geocode,
