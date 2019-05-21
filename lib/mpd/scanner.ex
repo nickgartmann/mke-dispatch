@@ -81,7 +81,7 @@ defmodule Mpd.Scanner do
 
   defparsec :datetime, datetime
 
-  defp parse_date(string) do
+  def parse_date(string) do
     case datetime(string) do
       {:ok, [month, day, year, 12, minute, second, "PM"], _, _, _, _} ->
         %NaiveDateTime{month: month, day: day, year: year, hour: 12, minute: minute,
