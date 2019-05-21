@@ -75,3 +75,5 @@ config :mpd, Mpd.Repo,
   pool_size: 10,
   types: Mpd.PostgresTypes
 
+
+  config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase

@@ -8,7 +8,11 @@ defmodule MpdWeb.PageController do
     })
   end
 
-  def index(conn, _), do: index(conn, %{"date" => Date.to_string(Date.utc_today())})
+  def index(conn, _) do
+    {:ok, now} = DateTime.now("America/Chicago")
+    today = DateTime.to_date(now)
+    index(conn, %{"date" => Date.to_string(today)})
+  end
 
   def calls(conn, %{"id" => id}) do
     calls = Mpd.Calls.get_by_id(id)

@@ -3,16 +3,17 @@
   <div class="usa-alert__body">
     <h3 class="usa-alert__heading">This is not an official MPD website</h3>
     <p class="usa-alert__text">
-    This project is an effort to provide a more useful view of the Milwaukee Police Department (MPD) call dispatch log, which is provided by the MPD <a href="https://itmdapps.milwaukee.gov/MPDCallData/">here</a>. 
-    Their live feed provides the most recent 90 minutes of calls dispatched. 
-    This dataset attempts to catalog the entire history back to October 19, 2016 (the start of this project). 
+    This project is an effort to provide a more useful view of the Milwaukee Police Department (MPD) call dispatch log, which is provided by the MPD <a href="https://itmdapps.milwaukee.gov/MPDCallData/">here</a>.
+    Their live feed provides the most recent 90 minutes of calls dispatched.
+    This dataset attempts to catalog the entire history back to October 19, 2016 (the start of this project).
     </p>
   </div>
 </div>
 
 <% previous_day = Date.add(@date, -1) %>
 <% next_day = Date.add(@date, 1) %>
-<% today = Date.utc_today() %>
+<% {:ok, now} = DateTime.now("America/Chicago") %>
+<% today = DateTime.to_date(now) %>
 
 <div class="usa-section">
   <div class="grid-row display-none tablet:display-flex">
@@ -63,7 +64,7 @@
         <tr>
           <td colspan="4">No data for this date, try <%= link(render_date(today), to: "/?date=#{today}") %></td>
         </tr>
-      <% end %> 
+      <% end %>
       <%= Enum.map @calls, fn(call) -> %>
       <tr class="text-top">
         <td><%= render_time(call.time) %></td>
