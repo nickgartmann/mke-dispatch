@@ -66,7 +66,7 @@ defmodule Mpd.Scanner do
     |> integer(2)
     |> ignore(string("/"))
     |> integer(4)
-    |> ignore(string(" ")) 
+    |> ignore(string(" "))
     |> integer(2)
     |> ignore(string(":"))
     |> integer(2)
@@ -77,13 +77,16 @@ defmodule Mpd.Scanner do
 
   defparsec :datetime, datetime
 
-  defp parse_date(string) do
+  def parse_date(string) do
     case datetime(string) do
       {:ok, [month, day, year, 12, minute, second, "PM"], _, _, _, _} ->
         %NaiveDateTime{month: month, day: day, year: year, hour: 12, minute: minute,
           second: second}
       {:ok, [month, day, year, hour, minute, second, "PM"], _, _, _, _} ->
         %NaiveDateTime{month: month, day: day, year: year, hour: hour + 12, minute: minute,
+          second: second}
+      {:ok, [month, day, year, 12, minute, second, "AM"], _, _, _, _} ->
+        %NaiveDateTime{month: month, day: day, year: year, hour: 0, minute: minute,
           second: second}
       {:ok, [month, day, year, hour, minute, second, "AM"], _, _, _, _} ->
         %NaiveDateTime{month: month, day: day, year: year, hour: hour, minute: minute,
