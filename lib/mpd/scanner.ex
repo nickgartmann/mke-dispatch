@@ -38,14 +38,10 @@ defmodule Mpd.Scanner do
               {lat, lng} -> Map.put(call, :point, %Geo.Point{coordinates: {lng, lat}, srid: 4326})
             end
             rcall = Repo.insert!(Call.changeset(%Call{}, call))
-            MpdWeb.Endpoint.broadcast("calls:all", "new", rcall)
-            MpdWeb.Endpoint.broadcast("calls:#{rcall.district}", "new", rcall)
           rcall ->
             if(rcall.status != call[:status] || rcall.nature != call[:nature]) do
               call = Map.put(call, :point, rcall.point)
               rcall = Repo.insert!(Call.changeset(%Call{}, call))
-              MpdWeb.Endpoint.broadcast("calls:all", "new", rcall)
-              MpdWeb.Endpoint.broadcast("calls:#{rcall.district}", "new", rcall)
             end
         end
 
