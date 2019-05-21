@@ -24,6 +24,10 @@ config :mpd, Mpd.Repo,
 config :mpd, Geocode,
   google_api_key: System.get_env("GOOGLE_GEOCODE_API_KEY")
 
+config :mpd, :mapbox,
+  api_key: System.get_env("MAPBOX_API_KEY")
+
+
 
 # Do not print debug messages in production
 config :logger, level: :info

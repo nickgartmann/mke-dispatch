@@ -64,7 +64,7 @@
     </div>
   </div>
   <%= if @lat && @lng do %>
-    <img class="width-full" src="https://api.mapbox.com/styles/v1/mapbox/light-v10/static/pin-s+005ea2(<%= "#{@lng},#{@lat}" %>)/<%= "#{@lng},#{@lat}" %>,14,0,00/1200x400?access_token=pk.eyJ1Ijoicm9ra2luY2F0YWRtaW4iLCJhIjoiY2l5NG54MGM5MDAybzJxcDJ2aHZqZW0zeiJ9.JFNvE7S97BujYDP7U9xPqQ">
+    <img class="width-full" src="https://api.mapbox.com/styles/v1/mapbox/light-v10/static/pin-s+005ea2(<%= "#{@lng},#{@lat}" %>)/<%= "#{@lng},#{@lat}" %>,14,0,00/1200x400?access_token=<%= Application.get_env(:mpd, :mapbox)[:api_key] %>">
     <br />
   <% end %>
   <%= if !(@lat && @lng) do %>
