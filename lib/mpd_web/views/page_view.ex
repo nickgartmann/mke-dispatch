@@ -1,9 +1,13 @@
 defmodule MpdWeb.PageView do
   use MpdWeb, :view
 
-  def render_date(date) do
-    "#{render_month(date.month)} #{date.day}, #{date.year}" 
+  def render_date(date, format \\ :long)
+
+  def render_date(date, :long) do
+    "#{render_month(date.month)} #{date.day}, #{date.year}"
   end
+
+  def render_date(date, :short), do: "#{date.month}/#{date.day}"
 
   def render_month(1), do: "January"
   def render_month(2), do: "February"

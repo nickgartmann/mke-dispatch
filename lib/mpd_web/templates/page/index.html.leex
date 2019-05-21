@@ -41,12 +41,10 @@
     </div>
     <div class="grid-row">
       <div class="grid-col padding-right-1">
-        <button class="usa-button">
-          <%= link(raw("<span style='transform: scaleX(-1); display: inline-block;'>&#x2794;</span>&nbsp;&nbsp;#{render_date(previous_day)}"), to: "/?date=#{previous_day}", class: "usa-button") %>
-        </button>
+          <%= link(raw("<span style='transform: scaleX(-1); display: inline-block;'>&#x2794;</span>&nbsp;&nbsp;#{render_date(previous_day, :short)}"), to: "/?date=#{previous_day}", class: "usa-button") %>
       </div>
       <div class="grid-col text-right padding-left-1">
-        <%= link(raw("#{render_date(next_day)}&nbsp;&nbsp;&#x2794;"), to: "/?date=#{next_day}", class: "usa-button") %>
+        <%= link(raw("#{render_date(next_day, :short)}&nbsp;&nbsp;&#x2794;"), to: "/?date=#{next_day}", class: "usa-button") %>
       </div>
     </div>
   </div>
