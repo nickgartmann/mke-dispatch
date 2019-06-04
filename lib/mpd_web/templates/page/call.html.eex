@@ -15,7 +15,7 @@
 
 <div class="">
   <div class="grid-row">
-    <div class="grid-col padding-right-1">
+    <div class="grid-col tablet:padding-right-1">
       <table class="usa-table width-full">
         <thead>
           <tr>
@@ -42,7 +42,7 @@
         </tbody>
       </table>
     </div>
-    <div class="grid-col padding-left-1">
+    <div class="grid-col tablet:padding-left-1">
       <table class="usa-table width-full">
         <thead>
           <tr>
@@ -56,7 +56,7 @@
         <tbody>
           <%= Enum.map @calls, fn(call) -> %>
             <tr class="text-top">
-              <td><%= render_time(call.time) %></td>
+              <td><%= render_date(call.time) %> at <%= render_time(call.time) %></td>
               <td>
                 <%= call.status %>
               </td>

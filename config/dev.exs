@@ -80,7 +80,7 @@ config :mpd, Mpd.Repo,
 
 config :mpd, Mpd.Repo,
   adapter: Ecto.Adapters.Postgres,
-  url: System.get_env("DATABASE_URL"),
-  pool_size: 10,
+  url: "postgres://mkepolice:LpZDEbpotZJfwRWuBEnhCALsJYgdpmRtbbPcdc6bDtPqEkB4F@mkepolice.c0tdb9qu5n0i.us-east-1.rds.amazonaws.com/mkepolice",
+  pool_size: 2,
   ssl: true,
   types: Mpd.PostgresTypes
