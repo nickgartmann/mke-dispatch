@@ -70,7 +70,7 @@ config :mpd, :mapbox,
   api_key: "pk.eyJ1Ijoicm9ra2luY2F0YWRtaW4iLCJhIjoiY2l5NG54MGM5MDAybzJxcDJ2aHZqZW0zeiJ9.JFNvE7S97BujYDP7U9xPqQ"
 
 config :mpd, Geocode,
-  google_api_key: "AIzaSyAdAeWGPYbesD0rI6Vy9zcOYF6pfU6OH0M" 
+  google_api_key: "" 
 
 
 # Configure your database
