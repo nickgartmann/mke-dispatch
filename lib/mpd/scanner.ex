@@ -18,7 +18,7 @@ defmodule Mpd.Scanner do
   end
 
   def init([scan_interval]) do
-    Process.send_after(self(), :scan, 2_000)
+    Process.send_after(self(), :scan, scan_interval)
     {:ok, %State{scan_interval: scan_interval}}
   end
 
