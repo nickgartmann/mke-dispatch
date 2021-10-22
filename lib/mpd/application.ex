@@ -12,7 +12,7 @@ defmodule Mpd.Application do
       Mpd.Repo,
       # Start the endpoint when the application starts
       MpdWeb.Endpoint,
-      {Mpd.Scanner, 18_000_000}
+      {Mpd.Scanner, 300_000}
       # Starts a worker by calling: Mpd.Worker.start_link(arg)
       # {Mpd.Worker, arg},
     ]
